@@ -1,22 +1,23 @@
-.PHONY: run build deploy
+.PHONY: run build clean deploy
 
 run:
 	hugo server -D
 
-build:
+build: clean
 	hugo
+	echo "romantomjak.com" > public/CNAME
 
-deploy:
+clean:
 	rm -rf public
 	mkdir public
 	git worktree prune
 	rm -rf .git/worktrees/public/
 	git worktree add -B gh-pages public origin/gh-pages
 	rm -rf public/*
-	$(build)
-	cd public/
-	echo "romantomjak.com" > CNAME
-	git add --all
-	git commit -m "Publishing to gh-pages (make deploy)"
-	cd ..
+
+deploy: build
+	cd public/ \
+	&& git add --all \
+	&& git commit -m "Publishing to gh-pages (make deploy)" \
+	&& cd ..
 	git push origin gh-pages
