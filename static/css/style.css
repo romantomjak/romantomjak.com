@@ -1,0 +1,294 @@
+/*
+ * CSS Reset
+ *
+ * http://meyerweb.com/eric/tools/css/reset/ 
+ * v2.0 | 20110126
+ * License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/*
+ * Base
+ */
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font: 16px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #666;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+h1 {
+    font-size: 30px;
+    letter-spacing: -1px;
+    color: #222;
+    font-weight: bold;
+}
+
+h2 {
+    font: italic 19px/1.3em Georgia, serif;
+    color: #bbb;
+}
+
+h3, h4, h5 {
+    color: #333;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+h6 {
+    font-size: 13px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+p {
+    margin: 20px 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+blockquote {
+    padding-left: 15px;
+    border-left: 3px solid #eee;
+}
+
+hr {
+    display: block;
+    border: none;
+    height: 1px;
+    margin: 40px auto;
+    background: #eee;
+}
+
+pre {
+    margin-bottom: 20px;
+}
+
+/*
+ * Utility classes
+ */
+.hidden {
+    display: none;
+}
+
+/*
+ * Navigation
+ */
+.nav-primary {
+    margin: 10px 0 0 0;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-primary__link {
+    margin: 0 5px;
+    font-size: 20px;
+    font-weight: 300;
+    color: #aaa;
+    margin-top: 10px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-style: normal;
+}
+
+.nav-secondary {
+    display: flex;
+    justify-content: center;
+}
+
+.nav-secondary__icon {
+    width: 32px;
+    height: 32px;
+    margin: 0 5px;
+}
+
+/*
+ * Header
+ */
+.header {
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+}
+
+.header__gif {
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    overflow:hidden;
+    object-fit: cover;
+}
+
+.header__gif--static {
+    position: absolute;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    overflow:hidden;
+    object-fit: cover;
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+    z-index: 1;
+}
+
+.header__gif--static:hover {
+    opacity: 0;
+}
+
+.header__title {
+    margin-top: 20px;
+    font-weight: 400;
+    letter-spacing: 0px;
+    font-size: 20px;
+    color: #222;
+    text-transform: lowercase;
+}
+
+/*
+ * Post list
+ */
+.post-list {
+    margin: auto;
+    max-width: 600px;
+}
+
+.post-list__header {
+    display: flex;
+}
+
+.post-list__item {
+    padding-bottom: 20px;
+}
+
+.post-list__link:hover .post-list__title {
+    text-decoration: none;
+    color: #5badf0;
+    -webkit-transition: all 0.15s ease;
+    -moz-transition: all 0.15s ease;
+    -ms-transition: all 0.15s ease;
+    -o-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+}
+
+.post-list__title {
+    width: 100%;
+    color: #333;
+    display: block;
+    font: bold 19px/1.7 "Helvetica Neue", helvetica, Arial, sans-serif;
+}
+
+.post-list__date {
+    flex-shrink: 0;
+    margin-left: 40px;
+    font: 300 17px/1.8 "Helvetica Neue", helvetica, Arial, sans-serif;
+    color: #bbb;
+}
+
+.post-list__summary {
+    font: normal 17px/1.5em "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #aaa;
+    margin-top: 5px
+}
+
+/*
+ *
+ */
+.article {
+    max-width: 680px;
+    margin: auto;
+
+    line-height: 1.7;
+}
+
+.article__title {
+    margin-bottom: 20px;
+    color: #333;
+    font: 400 32px/1.4em "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.article h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font: 400 24px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+/*
+ * Footer
+ */
+
+.footer {
+    margin: 100px 0;
+    font-size: 14px;
+    text-align: center;
+    color: #bbb;
+}
+

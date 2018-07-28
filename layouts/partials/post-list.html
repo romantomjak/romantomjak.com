@@ -1,0 +1,15 @@
+{{ $paginator := .Paginate (where .Pages "Type" "posts") }}
+
+<ul class="post-list">
+    {{ range where .Paginator.Pages ".Params.draft" "ne" true }}
+    <li class="post-list__item">
+        <a class="post-list__link" href="{{ .Permalink }}">
+            <div class="post-list__header">
+                <h3 class="post-list__title">{{ .Title }}</h3>
+                <aside class="post-list__date">{{ .Date.Format "Jan 2" }}</aside>
+            </div>
+            <p class="post-list__summary">{{ .Params.Summary | plainify | htmlUnescape }}</p>
+        </a>
+    </li>
+    {{ end }}
+</ul>

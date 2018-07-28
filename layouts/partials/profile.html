@@ -1,0 +1,15 @@
+<header class="header">
+    <a href="/">
+        <img class="header__gif--static hidden" src="{{ with .Site.Params.avatar }}{{ replace . ".gif" ".png" }}{{ end }}"/>
+        <!-- https://giphy.com/gifs/vMAapjokHPLqa5DkCv -->
+        <img class="header__gif" src="{{ with .Site.Params.avatar }}{{ . }}{{ end }}"/>
+    </a>
+    <h1 class="header__title">{{ .Site.Title }}</h1>
+    <nav class="hidden">
+        <ul class="nav-primary">
+            <li><a class="nav-primary__link" href="/">blog</a>/</li>
+            <li><a class="nav-primary__link" href="/code">code</a>/</li>
+            <li><a class="nav-primary__link" href="/about">me</a></li>
+        </ul>
+    </nav>
+</header>
