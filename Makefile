@@ -5,7 +5,6 @@ run:
 
 build: clean
 	hugo
-	echo "romantomjak.com" > public/CNAME
 
 clean:
 	rm -rf public
