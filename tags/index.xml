@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Notes on programming</title>
-    <link>http://romantomjak.com/tags/</link>
+    <link>https://romantomjak.com/tags/</link>
     <description>Recent content in Tags on Notes on programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
     <lastBuildDate>Thu, 26 Jul 2018 19:46:05 +0100</lastBuildDate>
     
-	<atom:link href="http://romantomjak.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://romantomjak.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title></title>
-      <link>http://romantomjak.com/tags/</link>
+      <link>https://romantomjak.com/tags/</link>
       <pubDate>Thu, 26 Jul 2018 19:46:05 +0100</pubDate>
       
-      <guid>http://romantomjak.com/tags/</guid>
+      <guid>https://romantomjak.com/tags/</guid>
       <description></description>
     </item>
     

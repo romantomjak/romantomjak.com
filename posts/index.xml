@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Notes on programming</title>
-    <link>http://romantomjak.com/posts/</link>
+    <link>https://romantomjak.com/posts/</link>
     <description>Recent content in Posts on Notes on programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
     <lastBuildDate>Thu, 26 Jul 2018 19:46:05 +0100</lastBuildDate>
     
-	<atom:link href="http://romantomjak.com/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://romantomjak.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Hello World</title>
-      <link>http://romantomjak.com/posts/hello-world/</link>
+      <link>https://romantomjak.com/posts/hello-world/</link>
       <pubDate>Thu, 26 Jul 2018 19:46:05 +0100</pubDate>
       
-      <guid>http://romantomjak.com/posts/hello-world/</guid>
+      <guid>https://romantomjak.com/posts/hello-world/</guid>
       <description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum metus a nisi iaculis accumsan a ullamcorper tortor. Sed eu nibh nec magna varius porttitor. Curabitur nibh justo, rhoncus ut libero eget, sagittis accumsan leo. Nam gravida sagittis purus eu dapibus. Phasellus nec orci lorem. Duis sed augue at tortor finibus dignissim sit amet ut mi. Cras varius lectus nulla, sit amet venenatis ipsum pulvinar at. Curabitur nisi ipsum, fringilla quis turpis ac, finibus commodo erat.</description>
     </item>
     
