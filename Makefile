@@ -1,7 +1,15 @@
-.PHONY: run build clean deploy
+.PHONY: run init-gh-pages-branch build clean deploy
 
 run:
 	hugo server -D
+
+# run only when origin/gh-pages does not exist
+init-gh-pages-branch:
+	git checkout --orphan gh-pages
+	git reset --hard
+	git commit --allow-empty -m "Initializing gh-pages branch"
+	git push upstream gh-pages
+	git checkout master
 
 build: clean
 	hugo
