@@ -8,9 +8,10 @@ The following files and directories including their contents are Copyright Roman
 
 ```
 content/
-static/static/images/oh-god.gif
+static/static/images/mother-of-god.gif
+static/static/images/mother-of-god.png
+static/images/apple-touch-icon.png
 static/favicon.ico
-static/apple-touch-icon.png
 ```
 
 All other directories and files are MIT Licensed unless clearly designated otherwise.
