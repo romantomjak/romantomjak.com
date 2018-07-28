@@ -1,10 +1,6 @@
 # romantomjak.com
 
-Roman's website
-
----
-
-This is the source for <a href="https://romantomjak.com/">romantomjak.com</a>. It is assembled by <a href="https://gohugo.io/">Hugo</a>.
+This is the source for [romantomjak.com](https://romantomjak.com/). It is assembled by [Hugo](https://gohugo.io/) and hosted on [GitHub Pages](https://pages.github.com).
 
 # License
 
