@@ -131,6 +131,28 @@ hr {
 
 pre {
     margin-bottom: 20px;
+    font-family: 'Source Code Pro', Menlo, monospace;
+    white-space: pre-wrap;
+    padding: 20px;
+    overflow: auto;
+    border-radius: 3px;
+    background: #272b2d;
+    font-size: 14px;
+    line-height: 1.5em;
+    font-weight: 500;
+    color: #d0d4d7;
+}
+
+code {
+    font-family: 'Source Code Pro', Menlo, monospace;
+    background-color: #EEE;
+    font-size: 14px;
+    padding: 4px;
+    font-weight: 600;
+}
+
+pre code.hljs {
+    background: #272b2d;
 }
 
 /*
