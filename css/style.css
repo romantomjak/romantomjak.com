@@ -215,6 +215,10 @@ pre {
 /*
  * Post list
  */
+.home {
+    padding:20px 10px 0;
+}
+
 .post-list {
     margin: auto;
     max-width: 600px;
@@ -265,7 +269,7 @@ pre {
     max-width: 680px;
     margin: auto;
     line-height: 1.7;
-    padding:0 20px;
+    padding:0 10px;
 }
 
 .article__title {
