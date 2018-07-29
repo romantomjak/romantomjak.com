@@ -259,19 +259,27 @@ pre {
 }
 
 /*
- *
+ * Single post
  */
 .article {
     max-width: 680px;
     margin: auto;
-
     line-height: 1.7;
+    padding:0 20px;
 }
 
 .article__title {
     margin-bottom: 20px;
     color: #333;
+    text-align: center;
     font: 400 32px/1.4em "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.article__header {
+    font: normal 15px/1.5em "Helvetica Neue",Helvetica,Arial,sans-serif;
+    margin: -5px 0 20px 0;
+    color: #b2b9be;
+    text-align: center;
 }
 
 .article h2 {
