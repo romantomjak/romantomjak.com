@@ -121,6 +121,14 @@ blockquote {
     border-left: 3px solid #eee;
 }
 
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
 hr {
     display: block;
     border: none;
@@ -160,6 +168,10 @@ pre code.hljs {
  */
 .hidden {
     display: none;
+}
+
+.center {
+    text-align: center;
 }
 
 /*
@@ -294,6 +306,10 @@ pre code.hljs {
     padding:0 10px;
 }
 
+.article a {
+    color: #5badf0;
+}
+
 .article__title {
     margin-bottom: 20px;
     color: #333;
@@ -313,6 +329,16 @@ pre code.hljs {
     margin-bottom: 10px;
     font: 400 24px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
+}
+
+.article ul {
+    margin-left: 15px;
+    padding: 0;
+}
+
+.article li {
+    list-style-position: inside;
+    list-style-type: disc;
 }
 
 /*
