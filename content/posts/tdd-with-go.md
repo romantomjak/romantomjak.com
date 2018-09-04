@@ -1,13 +1,13 @@
 ---
 title: "TDD with Go"
 date: 2018-09-02T15:20:03+01:00
-draft: true
+draft: false
 tags: ["go"]
 categories: ["tdd"]
-summary: Short introduction to TDD with Go. We will be creating a CLI tool that converts words into military call letters using the Military phonetic spelling alphabet.
+summary: Short introduction to TDD with Go. Why I like TDD, what are the benefits of practising TDD and, of course, a small CLI tool that will convert words into military call letters using the Military phonetic spelling alphabet!
 ---
 
-I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similiar to C, but with memory safety and garbage collection.
+I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similar to C, but with memory safety and garbage collection.
 
 {{< figure width="350" src="/media/tdd-circle-of-life.png" class="center" alt="TDD Circle of Life" >}}
 
@@ -144,7 +144,7 @@ run the tests and... BOOM! Tests pass again! The joy!
 
 ## Refactoring
 
-We're at the _Refactoring_ stage of the TDD lifecycle now and we definitelly have things to refactor. I hear you yell _DRY!_ and you're right. We've defined the exact same call letter mappings in two seperate files. The horror! Let's re-use the mappings from the `milpa.go`.
+We're at the _Refactoring_ stage of the TDD lifecycle now and we definitely have things to refactor. I hear you yell _DRY!_ and you're right. We've defined the exact same call letter mappings in two separate files. The horror! Let's re-use the mappings from the `milpa.go`.
 
 In `milpa_test.go` delete the `TEST_CODES` mapping and change the test to use `CODES` defined in `milpa.go`:
 
