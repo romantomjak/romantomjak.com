@@ -7,14 +7,6 @@ categories: ["tdd"]
 summary: Short introduction to TDD with Go. We will be creating a CLI tool that converts words into military call letters using the Military phonetic spelling alphabet.
 ---
 
-### TODO
-
-- Add closing thoughts
-- Link github repo - https://github.com/romantomjak/milpa
-- Proofread, spell check
-
----
-
 I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similiar to C, but with memory safety and garbage collection.
 
 {{< figure width="350" src="/media/tdd-circle-of-life.png" class="center" alt="TDD Circle of Life" >}}
@@ -26,6 +18,8 @@ Test-driven development (TDD) is a software development technique that relies on
 I can already hear you saying _u wot m8?_, but bear with me. This amazing acronym stands for Military Phonetic Alphabet! (_Crowd loses their mind. Cheering and applause follow._)
 
 This CLI tool will convert words and letters into military call letters using the Military Phonetic Spelling Alphabet. I picked this particular example because I often need to spell out something over the phone and I can't remember what each letter stands for. So hopefully this will be useful for both, person reading the article, and me!
+
+Github repo for the unpatient peeps: [https://github.com/romantomjak/milpa](https://github.com/romantomjak/milpa)
 
 ## Writing a failing test
 
@@ -70,7 +64,7 @@ func LetterToCode(letter string) string {
 }
 ```
 
-Run our tests again and.. our test passes! Right now this function is not really useful since we've hardcoded the result, but it made our test pass and that is all that matters for now.
+Run our tests again and.. BOOM! Our first successful test! Right now this function is not really useful since we've hardcoded the result, but it made our test pass and that is all that matters for now.
 
 ## The cycle repeats - more broken tests!
 
@@ -126,7 +120,7 @@ run our test suite and... we have a gazillion of broken tests. Great.
 
 Now our tests are calling the `LetterToCode` with all alphabet letters, but we're only returning result for the letter `R`...
 
-Surely, another dict with mappings would be useful, but it's not [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)... Let's worry about that later and go ahead and define it in `milpa.go`, right after the `package` statement:
+Surely, another dict with mappings would be useful, but it's not [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)... Let's not worry about that now and go ahead and define it in `milpa.go`, right after the `package` statement:
 
 ```go
 package main
@@ -152,7 +146,7 @@ run the tests and... BOOM! Tests pass again! The joy!
 
 We're at the _Refactoring_ stage of the TDD lifecycle now and we definitelly have things to refactor. I hear you yell _DRY!_ and you're right. We've defined the exact same call letter mappings in two seperate files. The horror! Let's re-use the mappings from the `milpa.go`.
 
-In `milpa_test.go` change `TEST_CODES` to `CODES`:
+In `milpa_test.go` delete the `TEST_CODES` mapping and change the test to use `CODES` defined in `milpa.go`:
 
 ```go
 func Test_Maps_Letters_To_Codes(t *testing.T) {
@@ -162,7 +156,7 @@ func Test_Maps_Letters_To_Codes(t *testing.T) {
 }
 ```
 
-That's better!
+That's better! We're no longer duplicating code and actually using mappings from production code.
 
 ## Time to improve
 
@@ -194,3 +188,182 @@ func LetterToCode(letter string) string {
 ```
 
 run the tests again and... BOOM! All green! I'm starting to like this!
+
+## More broken tests and answers to questions
+
+What else can we improve? What happens when I call the function with lower case letters? I don't know! But let's test that! :)))
+
+```go
+import (
+    "strings"
+    ...
+)
+
+...
+
+func Test_Ignores_Case(t *testing.T) {
+    for letter, code := range CODES {
+        lcLetter := strings.ToLower(letter)
+        result := LetterToCode(lcLetter)
+        if code != result {
+            t.Errorf("Expected '%s' to be a '%s' but got '%s'", lcLetter, code, result)
+        }
+    }
+}
+```
+
+... annnnd it didn't work. But that's okay. Let's fix that!
+
+Simplest thing to do would be to check if the letter is in lower case and convert it to upper case. That sounds sensible! Let's try:
+
+```go
+import (
+    "strings"
+)
+
+...
+
+func LetterToCode(letter string) string {
+    code := letter
+    if strings.ToLower(letter) == letter {
+        code = strings.ToUpper(letter)
+    }
+    if val, ok := CODES[code]; ok {
+        return val
+    }
+    return code
+}
+```
+
+Great success!
+
+## Converting whole words to call codes
+
+Almost there! The last bit that I'm interested in is to see what happens when I have a bunch of words that I want to convert. This feels like I would need another function for this... Let's start by speccing out the interface we would like to use:
+
+```go
+func Test_Maps_Word_To_Codes(t *testing.T) {
+    word := "Foo"
+    want := "Foxtrot Oscar Oscar"
+    got := WordToCode(word)
+    if got != want {
+        t.Errorf("Expected '%s' to be a '%s' but got '%s'", word, want, got)
+    }
+}
+```
+
+ah, but of course! We haven't defined `WordToCode`, but you already knew that, didn't you? :)))
+
+Quick clickity-clacking leads to this:
+
+```go
+func WordToCode(word string) string {
+    return "Foxtrot Oscar Oscar"
+}
+```
+
+Brilliant!
+
+## Speccing out a new function through a failing unit test
+
+Right. Let's modify our test to assert for different outcomes:
+
+```go
+func Test_Maps_Word_To_Codes(t *testing.T) {
+    testCases := []struct {
+        words string
+        want  string
+    }{
+        {"Foo", "Foxtrot Oscar Oscar"},
+        {"Foo Bar", "Foxtrot Oscar Oscar Bravo Alpha Romeo"},
+    }
+    for _, tc := range testCases {
+        if got := WordToCode(tc.words); got != tc.want {
+            t.Errorf("Expected '%s' to be a '%s' but got '%s'", tc.words, tc.want, got)
+        }
+    }
+}
+```
+
+So... how do we imagine our function to work? I assume we will have some sort of buffer where we will append our call codes to and then just return the whole string. Sounds good? Let's try this!
+
+```go
+import (
+    "bytes"
+    "strings"
+)
+
+...
+
+func WordToCode(word string) string {
+    var buffer bytes.Buffer
+    for index, character := range word {
+        letter := string(character)
+        if letter == " " {  // don't process spaces
+            continue
+        }
+        code := LetterToCode(letter)
+        space := " "
+        if index+1 == len(word) {  // skip trailing space
+            space = ""
+        }
+        buffer.WriteString(code + space)
+    }
+    return buffer.String()
+}
+```
+
+Ahhh... yes!
+
+## Building an executable
+
+Now that our code is fully tested we can add a simple main method and finally compile it to a binary and run a e2e test :)
+
+```go
+import (
+    "bytes"
+    "fmt"
+    "os"
+    "strings"
+)
+
+...
+
+func main() {
+    if len(os.Args) < 2 {
+        fmt.Printf("usage: %s hello world\n", os.Args[0])
+        os.Exit(1)
+    }
+
+    for i := 1; i < len(os.Args); i++ {
+        word := os.Args[i]
+        fmt.Println(WordToCode(word))
+    }
+}
+```
+
+Let's build that now:
+
+```sh
+go build
+```
+
+... and now for the moment of truth:
+
+```sh
+$ ./milpa hello world
+Hotel Echo Lima Lima Oscar
+Whiskey Oscar Romeo Lima Delta
+```
+
+BOOM! How about that!
+
+## Conclusion
+
+I had great fun writing this article and hope you enjoyed reading it! Hopefully I managed to explain one of the benefits of practising TDD clear enough - we were making sure the system actually meets our requirements!
+
+Did you notice how I asked questions about our system that I did not have answer to? What did I do? Created a test to confirm or reject the idea! I find it very liberating that I can back my thoughts with a unit test.
+
+I also believe TDD allows to write cleaner code because we first try to understand how it will interact with other parts of the system which leads to better decision making and more maintainable code.
+
+Did I already mention refactoring? Refactoring with thoroughly tested code base is a breeze!
