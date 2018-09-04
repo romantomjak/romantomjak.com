@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Roman Tomjak">
+    
+    <meta name="generator" content="Hugo 0.47" />
+    <title>TDD with Go &middot; Notes on programming</title>
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/highlight-js-ir-black.css">
+</head>
+<body>
+
+
+<header class="header">
+    <a href="/">
+        <img class="header__gif--static hidden" src="/images/mother-of-god.png"/>
+        
+        <img class="header__gif" src="/images/mother-of-god.gif"/>
+    </a>
+    <h1 class="header__title">Notes on programming</h1>
+    <nav class="hidden">
+        <ul class="nav-primary">
+            <li><a class="nav-primary__link" href="/">blog</a>/</li>
+            <li><a class="nav-primary__link" href="/code">code</a>/</li>
+            <li><a class="nav-primary__link" href="/about">me</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<main class="article">
+    <h1 class="article__title">TDD with Go</h1>
+    <article class="article__content">
+        <header class="article__header">
+            <time datetime="2018-09-02T15:20:03.000&#43;01:00">September 2, 2018</time> &middot; 8 min read
+        </header>
+        
+
+<p>I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similar to C, but with memory safety and garbage collection.</p>
+
+
+<figure class="center">
+    
+        <img src="/media/tdd-circle-of-life.png" alt="TDD Circle of Life" width="350" />
+    
+    
+</figure>
+
+
+<p>Test-driven development (TDD) is a software development technique that relies on very short, repetitive development cycles. Business requirements are turned into very specific test cases, then the software is <em>improved</em> until tests are passing. I specifically used the word improved - not only the tests are passing, but also small refactorings are made along the way. In other words, the goal of TDD is to write clean code that works.</p>
+
+<h2 id="milpa">MilPA</h2>
+
+<p>I can already hear you saying <em>u wot m8?</em>, but bear with me. This amazing acronym stands for Military Phonetic Alphabet! (<em>Crowd loses their mind. Cheering and applause follow.</em>)</p>
+
+<p>This CLI tool will convert words and letters into military call letters using the Military Phonetic Spelling Alphabet. I picked this particular example because I often need to spell out something over the phone and I can&rsquo;t remember what each letter stands for. So hopefully this will be useful for both - me, and the person reading this article!</p>
+
+<p>Github repo for the unpatient peeps: <a href="https://github.com/romantomjak/milpa">https://github.com/romantomjak/milpa</a></p>
+
+<h2 id="writing-a-failing-test">Writing a failing test</h2>
+
+<p>Let&rsquo;s start by creating <code>milpa_test.go</code> and defining our test:</p>
+
+<pre><code class="language-go">package main
+
+import (
+    &quot;testing&quot;
+)
+
+func Test_Maps_Letter_To_Code(t *testing.T) {
+    letter := &quot;R&quot;
+    code := &quot;Romeo&quot;
+    result := LetterToCode(letter)
+    if code != result {
+        t.Errorf(&quot;Expected '%s' to be '%s', but got '%s'&quot;, letter, code, result)
+    }
+}
+</code></pre>
+
+<p>and, of course, you will correct me that I haven&rsquo;t defined <code>LetterToCode</code>, but that&rsquo;s okay for now.</p>
+
+<h2 id="making-the-test-pass">Making the test pass</h2>
+
+<p>Now, if we run our test suite it will obviously complain about <code>LetterToCode</code> being undefined and that&rsquo;s fair. Let&rsquo;s confirm our assumptions by running the test:</p>
+
+<pre><code class="language-sh">go test
+</code></pre>
+
+<p>Yep!</p>
+
+<p>Let&rsquo;s fix this test by creating a <code>milpa.go</code> with the following content:</p>
+
+<pre><code class="language-go">package main
+
+func LetterToCode(letter string) string {
+    return &quot;Romeo&quot;
+}
+</code></pre>
+
+<p>Run our tests again and.. BOOM! Our first successful test! Right now this function is not really useful since we&rsquo;ve hardcoded the result, but it made our test pass and that is all that matters for now.</p>
+
+<h2 id="the-cycle-repeats-more-broken-tests">The cycle repeats - more broken tests!</h2>
+
+<p>Making sure we correctly map single letter <code>R</code> is not really useful, so let&rsquo;s make sure we test for all mappings. In <code>milpa_test.go</code> add the following:</p>
+
+<pre><code class="language-go">var TEST_CODES = map[string]string{
+    &quot;A&quot;: &quot;Alpha&quot;,
+    &quot;B&quot;: &quot;Bravo&quot;,
+    &quot;C&quot;: &quot;Charlie&quot;,
+    &quot;D&quot;: &quot;Delta&quot;,
+    &quot;E&quot;: &quot;Echo&quot;,
+    &quot;F&quot;: &quot;Foxtrot&quot;,
+    &quot;G&quot;: &quot;Golf&quot;,
+    &quot;H&quot;: &quot;Hotel&quot;,
+    &quot;I&quot;: &quot;India&quot;,
+    &quot;J&quot;: &quot;Juliett&quot;,
+    &quot;K&quot;: &quot;Kilo&quot;,
+    &quot;L&quot;: &quot;Lima&quot;,
+    &quot;M&quot;: &quot;Mike&quot;,
+    &quot;N&quot;: &quot;November&quot;,
+    &quot;O&quot;: &quot;Oscar&quot;,
+    &quot;P&quot;: &quot;Papa&quot;,
+    &quot;Q&quot;: &quot;Quebec&quot;,
+    &quot;R&quot;: &quot;Romeo&quot;,
+    &quot;S&quot;: &quot;Sierra&quot;,
+    &quot;T&quot;: &quot;Tango&quot;,
+    &quot;U&quot;: &quot;Uniform&quot;,
+    &quot;V&quot;: &quot;Victor&quot;,
+    &quot;W&quot;: &quot;Whiskey&quot;,
+    &quot;X&quot;: &quot;X-ray&quot;,
+    &quot;Y&quot;: &quot;Yankee&quot;,
+    &quot;Z&quot;: &quot;Zulu&quot;,
+}
+</code></pre>
+
+<p>Refactor our test method slightly to make use of our newly defined mappings:</p>
+
+<pre><code class="language-go">func Test_Maps_Letters_To_Codes(t *testing.T) {
+    for letter, code := range TEST_CODES {
+        result := LetterToCode(letter)
+        if code != result {
+            t.Errorf(&quot;Expected '%s' to be a '%s' but got '%s'&quot;, letter, code, result)
+        }
+    }
+}
+</code></pre>
+
+<p>run our test suite and&hellip; we have a gazillion of broken tests. Great.</p>
+
+<h2 id="fixing-1-000-000-broken-tests">Fixing 1 000 000 broken tests</h2>
+
+<p>Now our tests are calling the <code>LetterToCode</code> with all alphabet letters, but we&rsquo;re only returning result for the letter <code>R</code>&hellip;</p>
+
+<p>Surely, another dict with mappings would be useful, but it&rsquo;s not <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a>&hellip; Let&rsquo;s not worry about that now and go ahead and define it in <code>milpa.go</code>, right after the <code>package</code> statement:</p>
+
+<pre><code class="language-go">package main
+
+var CODES = map[string]string{
+    ...
+}
+</code></pre>
+
+<p>I did not include the whole dictionary, but it&rsquo;s the same we have in <code>milpa_test.go</code>.</p>
+
+<p>Now modify the <code>LetterToCode</code> to use our newly defined mappings:</p>
+
+<pre><code class="language-go">func LetterToCode(letter string) string {
+    return CODES[letter]
+}
+</code></pre>
+
+<p>run the tests and&hellip; BOOM! Tests pass again! The joy!</p>
+
+<h2 id="refactoring">Refactoring</h2>
+
+<p>We&rsquo;re at the <em>Refactoring</em> stage of the TDD lifecycle now and we definitely have things to refactor. I hear you yell <em>DRY!</em> and you&rsquo;re right. We&rsquo;ve defined the exact same call letter mappings in two separate files. The horror! Let&rsquo;s re-use the mappings from the <code>milpa.go</code>.</p>
+
+<p>In <code>milpa_test.go</code> delete the <code>TEST_CODES</code> mapping and change the test to use <code>CODES</code> defined in <code>milpa.go</code>:</p>
+
+<pre><code class="language-go">func Test_Maps_Letters_To_Codes(t *testing.T) {
+    for letter, code := range CODES {
+        ...
+    }
+}
+</code></pre>
+
+<p>That&rsquo;s better! We&rsquo;re no longer duplicating code and actually using mappings from production code.</p>
+
+<h2 id="time-to-improve">Time to improve</h2>
+
+<p>Let&rsquo;s continue <em>improving</em> our application by making sure that we don&rsquo;t modify symbols we&rsquo;re not aware of. In <code>milpa_test.go</code> add the following lines:</p>
+
+<pre><code class="language-go">func Test_Ignores_Unknown_Symbols(t *testing.T) {
+    symbols := []string{&quot; &quot;, &quot;,&quot;, &quot;;&quot;, &quot;!&quot;}
+    for _, symbol := range symbols {
+        result := LetterToCode(symbol)
+        if symbol != result {
+            t.Errorf(&quot;Expected '%s' to be the same, but got '%s'&quot;, symbol, result)
+        }
+    }
+}
+</code></pre>
+
+<p>run the tests and&hellip; we&rsquo;ve got work to do.</p>
+
+<p>Let&rsquo;s modify the <code>LetterToCode</code> function slightly and see if that makes the test pass:</p>
+
+<pre><code class="language-go">func LetterToCode(letter string) string {
+    if val, ok := CODES[letter]; ok {
+        return val
+    }
+    return letter
+}
+</code></pre>
+
+<p>run the tests again and&hellip; BOOM! All green! I&rsquo;m starting to like this!</p>
+
+<h2 id="more-broken-tests-and-answers-to-questions">More broken tests and answers to questions</h2>
+
+<p>What else can we improve? What happens when I call the function with lower case letters? I don&rsquo;t know! But let&rsquo;s test that! :)))</p>
+
+<pre><code class="language-go">import (
+    &quot;strings&quot;
+    ...
+)
+
+...
+
+func Test_Ignores_Case(t *testing.T) {
+    for letter, code := range CODES {
+        lcLetter := strings.ToLower(letter)
+        result := LetterToCode(lcLetter)
+        if code != result {
+            t.Errorf(&quot;Expected '%s' to be a '%s' but got '%s'&quot;, lcLetter, code, result)
+        }
+    }
+}
+</code></pre>
+
+<p>&hellip; annnnd it didn&rsquo;t work. But that&rsquo;s okay. Let&rsquo;s fix that!</p>
+
+<p>Simplest thing to do would be to check if the letter is in lower case and convert it to upper case. That sounds sensible! Let&rsquo;s try:</p>
+
+<pre><code class="language-go">import (
+    &quot;strings&quot;
+)
+
+...
+
+func LetterToCode(letter string) string {
+    code := letter
+    if strings.ToLower(letter) == letter {
+        code = strings.ToUpper(letter)
+    }
+    if val, ok := CODES[code]; ok {
+        return val
+    }
+    return code
+}
+</code></pre>
+
+<p>Great success!</p>
+
+<h2 id="converting-whole-words-to-call-codes">Converting whole words to call codes</h2>
+
+<p>Almost there! The last bit that I&rsquo;m curious about is to see what happens when I have a bunch of words that I want to convert. Sounds like I would need another function for this&hellip; Let&rsquo;s start by speccing out the interface we would like to use:</p>
+
+<pre><code class="language-go">func Test_Maps_Word_To_Codes(t *testing.T) {
+    word := &quot;Foo&quot;
+    want := &quot;Foxtrot Oscar Oscar&quot;
+    got := WordToCode(word)
+    if got != want {
+        t.Errorf(&quot;Expected '%s' to be a '%s' but got '%s'&quot;, word, want, got)
+    }
+}
+</code></pre>
+
+<p>ah, but of course! We haven&rsquo;t defined <code>WordToCode</code>, but you already knew that, didn&rsquo;t you? :)))</p>
+
+<p>Quick clickity-clacking leads to this:</p>
+
+<pre><code class="language-go">func WordToCode(word string) string {
+    return &quot;Foxtrot Oscar Oscar&quot;
+}
+</code></pre>
+
+<p>Brilliant!</p>
+
+<h2 id="speccing-out-a-new-function-through-a-failing-unit-test">Speccing out a new function through a failing unit test</h2>
+
+<p>Right. Let&rsquo;s modify our test to assert for different outcomes:</p>
+
+<pre><code class="language-go">func Test_Maps_Word_To_Codes(t *testing.T) {
+    testCases := []struct {
+        words string
+        want  string
+    }{
+        {&quot;Foo&quot;, &quot;Foxtrot Oscar Oscar&quot;},
+        {&quot;Foo Bar&quot;, &quot;Foxtrot Oscar Oscar Bravo Alpha Romeo&quot;},
+    }
+    for _, tc := range testCases {
+        if got := WordToCode(tc.words); got != tc.want {
+            t.Errorf(&quot;Expected '%s' to be a '%s' but got '%s'&quot;, tc.words, tc.want, got)
+        }
+    }
+}
+</code></pre>
+
+<p>So&hellip; how do we imagine our function to work? I assume we will have some sort of buffer where we will append our call codes to and then just return the whole string. Sounds good? Let&rsquo;s try it!</p>
+
+<pre><code class="language-go">import (
+    &quot;bytes&quot;
+    &quot;strings&quot;
+)
+
+...
+
+func WordToCode(word string) string {
+    var buffer bytes.Buffer
+    for index, character := range word {
+        letter := string(character)
+        if letter == &quot; &quot; {  // don't process spaces
+            continue
+        }
+        code := LetterToCode(letter)
+        space := &quot; &quot;
+        if index+1 == len(word) {  // skip trailing space
+            space = &quot;&quot;
+        }
+        buffer.WriteString(code + space)
+    }
+    return buffer.String()
+}
+</code></pre>
+
+<p>Ahhh&hellip; yes!</p>
+
+<h2 id="building-an-executable">Building an executable</h2>
+
+<p>Now that our code is fully tested we can add a simple main method and finally compile it to a binary and run a e2e test :)</p>
+
+<pre><code class="language-go">import (
+    &quot;bytes&quot;
+    &quot;fmt&quot;
+    &quot;os&quot;
+    &quot;strings&quot;
+)
+
+...
+
+func main() {
+    if len(os.Args) &lt; 2 {
+        fmt.Printf(&quot;usage: %s hello world\n&quot;, os.Args[0])
+        os.Exit(1)
+    }
+
+    for i := 1; i &lt; len(os.Args); i++ {
+        word := os.Args[i]
+        fmt.Println(WordToCode(word))
+    }
+}
+</code></pre>
+
+<p>Let&rsquo;s build that now:</p>
+
+<pre><code class="language-sh">go build
+</code></pre>
+
+<p>&hellip; and now for the moment of truth:</p>
+
+<pre><code class="language-sh">$ ./milpa hello world
+Hotel Echo Lima Lima Oscar
+Whiskey Oscar Romeo Lima Delta
+</code></pre>
+
+<p>BOOM! How &lsquo;bout that!</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I had great fun writing this article and hope you enjoyed reading it! Hopefully I managed to explain one of the benefits of practising TDD clear enough - we were making sure the system actually meets our requirements!</p>
+
+<p>Did you notice how I asked questions about our system that I did not have answer to? What did I do? Created a test to confirm or reject the idea! I find it very liberating that I can back my thoughts with a unit test.</p>
+
+<p>I also believe TDD allows to write cleaner code because we first try to understand how it will interact with other parts of the system which leads to better decision making and more maintainable code.</p>
+
+<p>Did I already mention refactoring? Refactoring with thoroughly tested code base is a breeze!</p>
+
+    </article>
+</main>
+
+<footer class="footer">
+    <nav>
+        <ul class="nav-secondary">
+            <li>
+                <a href="https://github.com/romantomjak">
+                    <img class="nav-secondary__icon" src="/images/github.svg" alt="Github" />
+                </a>
+            </li>
+            <li>
+                <a href="https://twitter.com/romantomjak">
+                    <img class="nav-secondary__icon" src="/images/twitter.svg" alt="Twitter" />
+                </a>
+            </li>
+            <li>
+                <a href="https://www.linkedin.com/in/romanstomjaks">
+                    <img class="nav-secondary__icon" src="/images/linkedin.svg" alt="LinkedIn" />
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <p>Copyright &copy; 2018 Roman Tomjak</p>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67617807-9"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-67617807-9');
+</script>
+<script src="https://romantomjak.comjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+

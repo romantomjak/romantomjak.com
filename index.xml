@@ -7,18 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 26 Jul 2018 19:46:05 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 02 Sep 2018 15:20:03 +0100</lastBuildDate>
     
 	<atom:link href="https://romantomjak.com/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hello World</title>
-      <link>https://romantomjak.com/posts/hello-world/</link>
-      <pubDate>Thu, 26 Jul 2018 19:46:05 +0100</pubDate>
+      <title>TDD with Go</title>
+      <link>https://romantomjak.com/posts/tdd-with-go/</link>
+      <pubDate>Sun, 02 Sep 2018 15:20:03 +0100</pubDate>
       
-      <guid>https://romantomjak.com/posts/hello-world/</guid>
-      <description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum metus a nisi iaculis accumsan a ullamcorper tortor. Sed eu nibh nec magna varius porttitor. Curabitur nibh justo, rhoncus ut libero eget, sagittis accumsan leo. Nam gravida sagittis purus eu dapibus. Phasellus nec orci lorem. Duis sed augue at tortor finibus dignissim sit amet ut mi. Cras varius lectus nulla, sit amet venenatis ipsum pulvinar at. Curabitur nisi ipsum, fringilla quis turpis ac, finibus commodo erat.</description>
+      <guid>https://romantomjak.com/posts/tdd-with-go/</guid>
+      <description>I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similar to C, but with memory safety and garbage collection.
+ Test-driven development (TDD) is a software development technique that relies on very short, repetitive development cycles. Business requirements are turned into very specific test cases, then the software is improved until tests are passing.</description>
     </item>
     
   </channel>
