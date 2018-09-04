@@ -11,13 +11,13 @@ I often find myself tinkering with Go as it possesses many of the language quali
 
 {{< figure width="350" src="/media/tdd-circle-of-life.png" class="center" alt="TDD Circle of Life" >}}
 
-Test-driven development (TDD) is a software development technique that relies on very short, repetitive, development cycles. Business requirements are turned into very specific test cases, then the software is _improved_ until tests are passing. I specifically used the word improved, which I think serves a very important point here - not only the tests are passing, but also small refactorings are made along the way. In other words, the goal of TDD is to write clean code that works.
+Test-driven development (TDD) is a software development technique that relies on very short, repetitive development cycles. Business requirements are turned into very specific test cases, then the software is _improved_ until tests are passing. I specifically used the word improved - not only the tests are passing, but also small refactorings are made along the way. In other words, the goal of TDD is to write clean code that works.
 
 ## MilPA
 
 I can already hear you saying _u wot m8?_, but bear with me. This amazing acronym stands for Military Phonetic Alphabet! (_Crowd loses their mind. Cheering and applause follow._)
 
-This CLI tool will convert words and letters into military call letters using the Military Phonetic Spelling Alphabet. I picked this particular example because I often need to spell out something over the phone and I can't remember what each letter stands for. So hopefully this will be useful for both, person reading the article, and me!
+This CLI tool will convert words and letters into military call letters using the Military Phonetic Spelling Alphabet. I picked this particular example because I often need to spell out something over the phone and I can't remember what each letter stands for. So hopefully this will be useful for both - me, and the person reading this article!
 
 Github repo for the unpatient peeps: [https://github.com/romantomjak/milpa](https://github.com/romantomjak/milpa)
 
@@ -239,7 +239,7 @@ Great success!
 
 ## Converting whole words to call codes
 
-Almost there! The last bit that I'm interested in is to see what happens when I have a bunch of words that I want to convert. This feels like I would need another function for this... Let's start by speccing out the interface we would like to use:
+Almost there! The last bit that I'm curious about is to see what happens when I have a bunch of words that I want to convert. Sounds like I would need another function for this... Let's start by speccing out the interface we would like to use:
 
 ```go
 func Test_Maps_Word_To_Codes(t *testing.T) {
@@ -285,7 +285,7 @@ func Test_Maps_Word_To_Codes(t *testing.T) {
 }
 ```
 
-So... how do we imagine our function to work? I assume we will have some sort of buffer where we will append our call codes to and then just return the whole string. Sounds good? Let's try this!
+So... how do we imagine our function to work? I assume we will have some sort of buffer where we will append our call codes to and then just return the whole string. Sounds good? Let's try it!
 
 ```go
 import (
@@ -356,7 +356,7 @@ Hotel Echo Lima Lima Oscar
 Whiskey Oscar Romeo Lima Delta
 ```
 
-BOOM! How about that!
+BOOM! How 'bout that!
 
 ## Conclusion
 
