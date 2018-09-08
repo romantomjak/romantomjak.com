@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="https://romantomjak.com/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="https://romantomjak.com/images/apple-touch-icon.png">
     <link rel="stylesheet" href="https://romantomjak.com/css/style.css">
-    <link rel="stylesheet" href="https://romantomjak.com/css/syntax.css">
+    <link rel="stylesheet" href="https://romantomjak.com/css/syntax/atom-one-dark.css">
 </head>
 <body>
 
@@ -66,77 +66,92 @@
 <h2 id="writing-a-failing-test">Writing a failing test</h2>
 
 <p>Let&rsquo;s start by creating <code>milpa_test.go</code> and defining our test:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">package</span> <span class="nx">main</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&#34;testing&#34;</span>
-<span class="p">)</span>
+<pre><code class="language-golang">package main
 
-<span class="kd">func</span> <span class="nx">Test_Maps_Letter_To_Code</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">letter</span> <span class="o">:=</span> <span class="s">&#34;R&#34;</span>
-    <span class="nx">code</span> <span class="o">:=</span> <span class="s">&#34;Romeo&#34;</span>
-    <span class="nx">result</span> <span class="o">:=</span> <span class="nx">LetterToCode</span><span class="p">(</span><span class="nx">letter</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">code</span> <span class="o">!=</span> <span class="nx">result</span> <span class="p">{</span>
-        <span class="nx">t</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&#34;Expected &#39;%s&#39; to be &#39;%s&#39;, but got &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="nx">letter</span><span class="p">,</span> <span class="nx">code</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+import (
+    &quot;testing&quot;
+)
+
+func Test_Maps_Letter_To_Code(t *testing.T) {
+    letter := &quot;R&quot;
+    code := &quot;Romeo&quot;
+    result := LetterToCode(letter)
+    if code != result {
+        t.Errorf(&quot;Expected '%s' to be '%s', but got '%s'&quot;, letter, code, result)
+    }
+}
+</code></pre>
+
 <p>and, of course, you will correct me that I haven&rsquo;t defined <code>LetterToCode</code>, but that&rsquo;s okay for now.</p>
 
 <h2 id="making-the-test-pass">Making the test pass</h2>
 
 <p>Now, if we run our test suite it will obviously complain about <code>LetterToCode</code> being undefined and that&rsquo;s fair. Let&rsquo;s confirm our assumptions by running the test:</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go <span class="nb">test</span>
-./milpa_test.go:10:15: undefined: LetterToCode</code></pre></div>
+
+<pre><code class="language-sh">$ go test
+./milpa_test.go:10:15: undefined: LetterToCode
+</code></pre>
+
 <p>Yep!</p>
 
 <p>Let&rsquo;s fix this test by creating a <code>milpa.go</code> with the following content:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">package</span> <span class="nx">main</span>
 
-<span class="kd">func</span> <span class="nx">LetterToCode</span><span class="p">(</span><span class="nx">letter</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="s">&#34;Romeo&#34;</span>
-<span class="p">}</span></code></pre></div>
+<pre><code class="language-golang">package main
+
+func LetterToCode(letter string) string {
+    return &quot;Romeo&quot;
+}
+</code></pre>
+
 <p>Run our tests again and.. BOOM! Our first successful test! Right now this function is not really useful since we&rsquo;ve hardcoded the result, but it made our test pass and that is all that matters for now.</p>
 
 <h2 id="the-cycle-repeats-more-broken-tests">The cycle repeats - more broken tests!</h2>
 
 <p>Making sure we correctly map single letter <code>R</code> is not really useful, so let&rsquo;s make sure we test for all mappings. In <code>milpa_test.go</code> add the following:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">var</span> <span class="nx">TEST_CODES</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span>
-    <span class="s">&#34;A&#34;</span><span class="p">:</span> <span class="s">&#34;Alpha&#34;</span><span class="p">,</span>
-    <span class="s">&#34;B&#34;</span><span class="p">:</span> <span class="s">&#34;Bravo&#34;</span><span class="p">,</span>
-    <span class="s">&#34;C&#34;</span><span class="p">:</span> <span class="s">&#34;Charlie&#34;</span><span class="p">,</span>
-    <span class="s">&#34;D&#34;</span><span class="p">:</span> <span class="s">&#34;Delta&#34;</span><span class="p">,</span>
-    <span class="s">&#34;E&#34;</span><span class="p">:</span> <span class="s">&#34;Echo&#34;</span><span class="p">,</span>
-    <span class="s">&#34;F&#34;</span><span class="p">:</span> <span class="s">&#34;Foxtrot&#34;</span><span class="p">,</span>
-    <span class="s">&#34;G&#34;</span><span class="p">:</span> <span class="s">&#34;Golf&#34;</span><span class="p">,</span>
-    <span class="s">&#34;H&#34;</span><span class="p">:</span> <span class="s">&#34;Hotel&#34;</span><span class="p">,</span>
-    <span class="s">&#34;I&#34;</span><span class="p">:</span> <span class="s">&#34;India&#34;</span><span class="p">,</span>
-    <span class="s">&#34;J&#34;</span><span class="p">:</span> <span class="s">&#34;Juliett&#34;</span><span class="p">,</span>
-    <span class="s">&#34;K&#34;</span><span class="p">:</span> <span class="s">&#34;Kilo&#34;</span><span class="p">,</span>
-    <span class="s">&#34;L&#34;</span><span class="p">:</span> <span class="s">&#34;Lima&#34;</span><span class="p">,</span>
-    <span class="s">&#34;M&#34;</span><span class="p">:</span> <span class="s">&#34;Mike&#34;</span><span class="p">,</span>
-    <span class="s">&#34;N&#34;</span><span class="p">:</span> <span class="s">&#34;November&#34;</span><span class="p">,</span>
-    <span class="s">&#34;O&#34;</span><span class="p">:</span> <span class="s">&#34;Oscar&#34;</span><span class="p">,</span>
-    <span class="s">&#34;P&#34;</span><span class="p">:</span> <span class="s">&#34;Papa&#34;</span><span class="p">,</span>
-    <span class="s">&#34;Q&#34;</span><span class="p">:</span> <span class="s">&#34;Quebec&#34;</span><span class="p">,</span>
-    <span class="s">&#34;R&#34;</span><span class="p">:</span> <span class="s">&#34;Romeo&#34;</span><span class="p">,</span>
-    <span class="s">&#34;S&#34;</span><span class="p">:</span> <span class="s">&#34;Sierra&#34;</span><span class="p">,</span>
-    <span class="s">&#34;T&#34;</span><span class="p">:</span> <span class="s">&#34;Tango&#34;</span><span class="p">,</span>
-    <span class="s">&#34;U&#34;</span><span class="p">:</span> <span class="s">&#34;Uniform&#34;</span><span class="p">,</span>
-    <span class="s">&#34;V&#34;</span><span class="p">:</span> <span class="s">&#34;Victor&#34;</span><span class="p">,</span>
-    <span class="s">&#34;W&#34;</span><span class="p">:</span> <span class="s">&#34;Whiskey&#34;</span><span class="p">,</span>
-    <span class="s">&#34;X&#34;</span><span class="p">:</span> <span class="s">&#34;X-ray&#34;</span><span class="p">,</span>
-    <span class="s">&#34;Y&#34;</span><span class="p">:</span> <span class="s">&#34;Yankee&#34;</span><span class="p">,</span>
-    <span class="s">&#34;Z&#34;</span><span class="p">:</span> <span class="s">&#34;Zulu&#34;</span><span class="p">,</span>
-<span class="p">}</span></code></pre></div>
+
+<pre><code class="language-golang">var TEST_CODES = map[string]string{
+    &quot;A&quot;: &quot;Alpha&quot;,
+    &quot;B&quot;: &quot;Bravo&quot;,
+    &quot;C&quot;: &quot;Charlie&quot;,
+    &quot;D&quot;: &quot;Delta&quot;,
+    &quot;E&quot;: &quot;Echo&quot;,
+    &quot;F&quot;: &quot;Foxtrot&quot;,
+    &quot;G&quot;: &quot;Golf&quot;,
+    &quot;H&quot;: &quot;Hotel&quot;,
+    &quot;I&quot;: &quot;India&quot;,
+    &quot;J&quot;: &quot;Juliett&quot;,
+    &quot;K&quot;: &quot;Kilo&quot;,
+    &quot;L&quot;: &quot;Lima&quot;,
+    &quot;M&quot;: &quot;Mike&quot;,
+    &quot;N&quot;: &quot;November&quot;,
+    &quot;O&quot;: &quot;Oscar&quot;,
+    &quot;P&quot;: &quot;Papa&quot;,
+    &quot;Q&quot;: &quot;Quebec&quot;,
+    &quot;R&quot;: &quot;Romeo&quot;,
+    &quot;S&quot;: &quot;Sierra&quot;,
+    &quot;T&quot;: &quot;Tango&quot;,
+    &quot;U&quot;: &quot;Uniform&quot;,
+    &quot;V&quot;: &quot;Victor&quot;,
+    &quot;W&quot;: &quot;Whiskey&quot;,
+    &quot;X&quot;: &quot;X-ray&quot;,
+    &quot;Y&quot;: &quot;Yankee&quot;,
+    &quot;Z&quot;: &quot;Zulu&quot;,
+}
+</code></pre>
+
 <p>Refactor our test method slightly to make use of our newly defined mappings:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nx">Test_Maps_Letters_To_Codes</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="nx">letter</span><span class="p">,</span> <span class="nx">code</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">TEST_CODES</span> <span class="p">{</span>
-        <span class="nx">result</span> <span class="o">:=</span> <span class="nx">LetterToCode</span><span class="p">(</span><span class="nx">letter</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">code</span> <span class="o">!=</span> <span class="nx">result</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&#34;Expected &#39;%s&#39; to be a &#39;%s&#39; but got &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="nx">letter</span><span class="p">,</span> <span class="nx">code</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+
+<pre><code class="language-golang">func Test_Maps_Letters_To_Codes(t *testing.T) {
+    for letter, code := range TEST_CODES {
+        result := LetterToCode(letter)
+        if code != result {
+            t.Errorf(&quot;Expected '%s' to be a '%s' but got '%s'&quot;, letter, code, result)
+        }
+    }
+}
+</code></pre>
+
 <p>run our test suite and&hellip; we have a gazillion of broken tests. Great.</p>
 
 <h2 id="fixing-1-000-000-broken-tests">Fixing 1 000 000 broken tests</h2>
@@ -144,17 +159,23 @@
 <p>Now our tests are calling the <code>LetterToCode</code> with all alphabet letters, but we&rsquo;re only returning result for the letter <code>R</code>&hellip;</p>
 
 <p>Surely, another dict with mappings would be useful, but it&rsquo;s not <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a>&hellip; Let&rsquo;s not worry about that now and go ahead and define it in <code>milpa.go</code>, right after the <code>package</code> statement:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">package</span> <span class="nx">main</span>
 
-<span class="kd">var</span> <span class="nx">CODES</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span>
-    <span class="o">...</span>
-<span class="p">}</span></code></pre></div>
+<pre><code class="language-golang">package main
+
+var CODES = map[string]string{
+    ...
+}
+</code></pre>
+
 <p>I did not include the whole dictionary, but it&rsquo;s the same we have in <code>milpa_test.go</code>.</p>
 
 <p>Now modify the <code>LetterToCode</code> to use our newly defined mappings:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nx">LetterToCode</span><span class="p">(</span><span class="nx">letter</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">CODES</span><span class="p">[</span><span class="nx">letter</span><span class="p">]</span>
-<span class="p">}</span></code></pre></div>
+
+<pre><code class="language-golang">func LetterToCode(letter string) string {
+    return CODES[letter]
+}
+</code></pre>
+
 <p>run the tests and&hellip; BOOM! Tests pass again! The joy!</p>
 
 <h2 id="refactoring">Refactoring</h2>
@@ -162,136 +183,163 @@
 <p>We&rsquo;re at the <em>Refactoring</em> stage of the TDD lifecycle now and we definitely have things to refactor. I hear you yell <em>DRY!</em> and you&rsquo;re right. We&rsquo;ve defined the exact same call letter mappings in two separate files. The horror! Let&rsquo;s re-use the mappings from the <code>milpa.go</code>.</p>
 
 <p>In <code>milpa_test.go</code> delete the <code>TEST_CODES</code> mapping and change the test to use <code>CODES</code> defined in <code>milpa.go</code>:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nx">Test_Maps_Letters_To_Codes</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="nx">letter</span><span class="p">,</span> <span class="nx">code</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">CODES</span> <span class="p">{</span>
-        <span class="o">...</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+
+<pre><code class="language-golang">func Test_Maps_Letters_To_Codes(t *testing.T) {
+    for letter, code := range CODES {
+        ...
+    }
+}
+</code></pre>
+
 <p>That&rsquo;s better! We&rsquo;re no longer duplicating code and actually using mappings from production code.</p>
 
 <h2 id="time-to-improve">Time to improve</h2>
 
 <p>Let&rsquo;s continue <em>improving</em> our application by making sure that we don&rsquo;t modify symbols we&rsquo;re not aware of. In <code>milpa_test.go</code> add the following lines:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nx">Test_Ignores_Unknown_Symbols</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">symbols</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34; &#34;</span><span class="p">,</span> <span class="s">&#34;,&#34;</span><span class="p">,</span> <span class="s">&#34;;&#34;</span><span class="p">,</span> <span class="s">&#34;!&#34;</span><span class="p">}</span>
-    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">symbol</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">symbols</span> <span class="p">{</span>
-        <span class="nx">result</span> <span class="o">:=</span> <span class="nx">LetterToCode</span><span class="p">(</span><span class="nx">symbol</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">symbol</span> <span class="o">!=</span> <span class="nx">result</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&#34;Expected &#39;%s&#39; to be the same, but got &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="nx">symbol</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+
+<pre><code class="language-golang">func Test_Ignores_Unknown_Symbols(t *testing.T) {
+    symbols := []string{&quot; &quot;, &quot;,&quot;, &quot;;&quot;, &quot;!&quot;}
+    for _, symbol := range symbols {
+        result := LetterToCode(symbol)
+        if symbol != result {
+            t.Errorf(&quot;Expected '%s' to be the same, but got '%s'&quot;, symbol, result)
+        }
+    }
+}
+</code></pre>
+
 <p>run the tests and&hellip; we&rsquo;ve got work to do.</p>
 
 <p>Let&rsquo;s modify the <code>LetterToCode</code> function slightly and see if that makes the test pass:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nx">LetterToCode</span><span class="p">(</span><span class="nx">letter</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">val</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">CODES</span><span class="p">[</span><span class="nx">letter</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">val</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">letter</span>
-<span class="p">}</span></code></pre></div>
+
+<pre><code class="language-golang">func LetterToCode(letter string) string {
+    if val, ok := CODES[letter]; ok {
+        return val
+    }
+    return letter
+}
+</code></pre>
+
 <p>run the tests again and&hellip; BOOM! All green! I&rsquo;m starting to like this!</p>
 
 <h2 id="more-broken-tests-and-answers-to-questions">More broken tests and answers to questions</h2>
 
 <p>What else can we improve? What happens when I call the function with lower case letters? I don&rsquo;t know! But let&rsquo;s test that! :)))</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&#34;strings&#34;</span>
-    <span class="o">...</span>
-<span class="p">)</span>
 
-<span class="o">...</span>
+<pre><code class="language-golang">import (
+    &quot;strings&quot;
+    ...
+)
 
-<span class="kd">func</span> <span class="nx">Test_Ignores_Case</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="nx">letter</span><span class="p">,</span> <span class="nx">code</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">CODES</span> <span class="p">{</span>
-        <span class="nx">lcLetter</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">ToLower</span><span class="p">(</span><span class="nx">letter</span><span class="p">)</span>
-        <span class="nx">result</span> <span class="o">:=</span> <span class="nx">LetterToCode</span><span class="p">(</span><span class="nx">lcLetter</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">code</span> <span class="o">!=</span> <span class="nx">result</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&#34;Expected &#39;%s&#39; to be a &#39;%s&#39; but got &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="nx">lcLetter</span><span class="p">,</span> <span class="nx">code</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+...
+
+func Test_Ignores_Case(t *testing.T) {
+    for letter, code := range CODES {
+        lcLetter := strings.ToLower(letter)
+        result := LetterToCode(lcLetter)
+        if code != result {
+            t.Errorf(&quot;Expected '%s' to be a '%s' but got '%s'&quot;, lcLetter, code, result)
+        }
+    }
+}
+</code></pre>
+
 <p>&hellip; annnnd it didn&rsquo;t work. But that&rsquo;s okay. Let&rsquo;s fix that!</p>
 
 <p>Simplest thing to do would be to check if the letter is in lower case and convert it to upper case. That sounds sensible! Let&rsquo;s try:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&#34;strings&#34;</span>
-<span class="p">)</span>
 
-<span class="o">...</span>
+<pre><code class="language-golang">import (
+    &quot;strings&quot;
+)
 
-<span class="kd">func</span> <span class="nx">LetterToCode</span><span class="p">(</span><span class="nx">letter</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="nx">code</span> <span class="o">:=</span> <span class="nx">letter</span>
-    <span class="k">if</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">ToLower</span><span class="p">(</span><span class="nx">letter</span><span class="p">)</span> <span class="o">==</span> <span class="nx">letter</span> <span class="p">{</span>
-        <span class="nx">code</span> <span class="p">=</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">ToUpper</span><span class="p">(</span><span class="nx">letter</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">val</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">CODES</span><span class="p">[</span><span class="nx">code</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">val</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">code</span>
-<span class="p">}</span></code></pre></div>
+...
+
+func LetterToCode(letter string) string {
+    code := letter
+    if strings.ToLower(letter) == letter {
+        code = strings.ToUpper(letter)
+    }
+    if val, ok := CODES[code]; ok {
+        return val
+    }
+    return code
+}
+</code></pre>
+
 <p>Great success!</p>
 
 <h2 id="converting-whole-words-to-call-codes">Converting whole words to call codes</h2>
 
 <p>Almost there! The last bit that I&rsquo;m curious about is to see what happens when I have a bunch of words that I want to convert. Sounds like I would need another function for this&hellip; Let&rsquo;s start by speccing out the interface we would like to use:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nx">Test_Maps_Word_To_Codes</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">word</span> <span class="o">:=</span> <span class="s">&#34;Foo&#34;</span>
-    <span class="nx">want</span> <span class="o">:=</span> <span class="s">&#34;Foxtrot Oscar Oscar&#34;</span>
-    <span class="nx">got</span> <span class="o">:=</span> <span class="nx">WordToCode</span><span class="p">(</span><span class="nx">word</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">got</span> <span class="o">!=</span> <span class="nx">want</span> <span class="p">{</span>
-        <span class="nx">t</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&#34;Expected &#39;%s&#39; to be a &#39;%s&#39; but got &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="nx">word</span><span class="p">,</span> <span class="nx">want</span><span class="p">,</span> <span class="nx">got</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+
+<pre><code class="language-golang">func Test_Maps_Word_To_Codes(t *testing.T) {
+    word := &quot;Foo&quot;
+    want := &quot;Foxtrot Oscar Oscar&quot;
+    got := WordToCode(word)
+    if got != want {
+        t.Errorf(&quot;Expected '%s' to be a '%s' but got '%s'&quot;, word, want, got)
+    }
+}
+</code></pre>
+
 <p>ah, but of course! We haven&rsquo;t defined <code>WordToCode</code>, but you already knew that, didn&rsquo;t you? :)))</p>
 
 <p>Quick clickity-clacking leads to this:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nx">WordToCode</span><span class="p">(</span><span class="nx">word</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="s">&#34;Foxtrot Oscar Oscar&#34;</span>
-<span class="p">}</span></code></pre></div>
+
+<pre><code class="language-golang">func WordToCode(word string) string {
+    return &quot;Foxtrot Oscar Oscar&quot;
+}
+</code></pre>
+
 <p>Brilliant!</p>
 
 <h2 id="speccing-out-a-new-function-through-a-failing-unit-test">Speccing out a new function through a failing unit test</h2>
 
 <p>Right. Let&rsquo;s modify our test to assert for different outcomes:</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nx">Test_Maps_Word_To_Codes</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">testCases</span> <span class="o">:=</span> <span class="p">[]</span><span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">words</span> <span class="kt">string</span>
-        <span class="nx">want</span>  <span class="kt">string</span>
-    <span class="p">}{</span>
-        <span class="p">{</span><span class="s">&#34;Foo&#34;</span><span class="p">,</span> <span class="s">&#34;Foxtrot Oscar Oscar&#34;</span><span class="p">},</span>
-        <span class="p">{</span><span class="s">&#34;Foo Bar&#34;</span><span class="p">,</span> <span class="s">&#34;Foxtrot Oscar Oscar Bravo Alpha Romeo&#34;</span><span class="p">},</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">tc</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">testCases</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nx">got</span> <span class="o">:=</span> <span class="nx">WordToCode</span><span class="p">(</span><span class="nx">tc</span><span class="p">.</span><span class="nx">words</span><span class="p">);</span> <span class="nx">got</span> <span class="o">!=</span> <span class="nx">tc</span><span class="p">.</span><span class="nx">want</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&#34;Expected &#39;%s&#39; to be a &#39;%s&#39; but got &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="nx">tc</span><span class="p">.</span><span class="nx">words</span><span class="p">,</span> <span class="nx">tc</span><span class="p">.</span><span class="nx">want</span><span class="p">,</span> <span class="nx">got</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+
+<pre><code class="language-golang">func Test_Maps_Word_To_Codes(t *testing.T) {
+    testCases := []struct {
+        words string
+        want  string
+    }{
+        {&quot;Foo&quot;, &quot;Foxtrot Oscar Oscar&quot;},
+        {&quot;Foo Bar&quot;, &quot;Foxtrot Oscar Oscar Bravo Alpha Romeo&quot;},
+    }
+    for _, tc := range testCases {
+        if got := WordToCode(tc.words); got != tc.want {
+            t.Errorf(&quot;Expected '%s' to be a '%s' but got '%s'&quot;, tc.words, tc.want, got)
+        }
+    }
+}
+</code></pre>
+
 <p>So&hellip; how do we imagine our function to work? I assume we will have some sort of buffer where we will append our call codes to and then just return the whole string. Sounds good? Let&rsquo;s try it!</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&#34;bytes&#34;</span>
-    <span class="s">&#34;strings&#34;</span>
-<span class="p">)</span>
 
-<span class="o">...</span>
+<pre><code class="language-golang">import (
+    &quot;bytes&quot;
+    &quot;strings&quot;
+)
 
-<span class="kd">func</span> <span class="nx">WordToCode</span><span class="p">(</span><span class="nx">word</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">buffer</span> <span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span>
-    <span class="k">for</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">character</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">word</span> <span class="p">{</span>
-        <span class="nx">letter</span> <span class="o">:=</span> <span class="nb">string</span><span class="p">(</span><span class="nx">character</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">letter</span> <span class="o">==</span> <span class="s">&#34; &#34;</span> <span class="p">{</span>  <span class="c1">// don&#39;t process spaces
-</span><span class="c1"></span>            <span class="k">continue</span>
-        <span class="p">}</span>
-        <span class="nx">code</span> <span class="o">:=</span> <span class="nx">LetterToCode</span><span class="p">(</span><span class="nx">letter</span><span class="p">)</span>
-        <span class="nx">space</span> <span class="o">:=</span> <span class="s">&#34; &#34;</span>
-        <span class="k">if</span> <span class="nx">index</span><span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// skip trailing space
-</span><span class="c1"></span>            <span class="nx">space</span> <span class="p">=</span> <span class="s">&#34;&#34;</span>
-        <span class="p">}</span>
-        <span class="nx">buffer</span><span class="p">.</span><span class="nx">WriteString</span><span class="p">(</span><span class="nx">code</span> <span class="o">+</span> <span class="nx">space</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">String</span><span class="p">()</span>
-<span class="p">}</span></code></pre></div>
+...
+
+func WordToCode(word string) string {
+    var buffer bytes.Buffer
+    for index, character := range word {
+        letter := string(character)
+        if letter == &quot; &quot; {  // don't process spaces
+            continue
+        }
+        code := LetterToCode(letter)
+        space := &quot; &quot;
+        if index+1 == len(word) {  // skip trailing space
+            space = &quot;&quot;
+        }
+        buffer.WriteString(code + space)
+    }
+    return buffer.String()
+}
+</code></pre>
+
 <p>Ahhh&hellip; yes! All green again.</p>
 
 <h2 id="removing-redundant-tests">Removing redundant tests</h2>
@@ -309,32 +357,41 @@
 <h2 id="building-an-executable">Building an executable</h2>
 
 <p>Now that our code is fully tested we can add a simple main method and finally compile it to a binary and run a e2e test :)</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&#34;bytes&#34;</span>
-    <span class="s">&#34;fmt&#34;</span>
-    <span class="s">&#34;os&#34;</span>
-    <span class="s">&#34;strings&#34;</span>
-<span class="p">)</span>
 
-<span class="o">...</span>
+<pre><code class="language-golang">import (
+    &quot;bytes&quot;
+    &quot;fmt&quot;
+    &quot;os&quot;
+    &quot;strings&quot;
+)
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">)</span> <span class="p">&lt;</span> <span class="mi">2</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&#34;usage: %s hello world\n&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="nx">os</span><span class="p">.</span><span class="nx">Exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="p">}</span>
+...
 
-    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-        <span class="nx">word</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">WordToCode</span><span class="p">(</span><span class="nx">word</span><span class="p">))</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+func main() {
+    if len(os.Args) &lt; 2 {
+        fmt.Printf(&quot;usage: %s hello world\n&quot;, os.Args[0])
+        os.Exit(1)
+    }
+
+    for i := 1; i &lt; len(os.Args); i++ {
+        word := os.Args[i]
+        fmt.Println(WordToCode(word))
+    }
+}
+</code></pre>
+
 <p>Let&rsquo;s build that now:</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go build</code></pre></div>
+
+<pre><code class="language-sh">$ go build
+</code></pre>
+
 <p>&hellip; and now for the moment of truth:</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ./milpa hello world
+
+<pre><code class="language-sh">$ ./milpa hello world
 Hotel Echo Lima Lima Oscar
-Whiskey Oscar Romeo Lima Delta</code></pre></div>
+Whiskey Oscar Romeo Lima Delta
+</code></pre>
+
 <p>BOOM! How &lsquo;bout that!</p>
 
 <h2 id="conclusion">Conclusion</h2>
@@ -380,6 +437,8 @@ Whiskey Oscar Romeo Lima Delta</code></pre></div>
     gtag('js', new Date());
     gtag('config', 'UA-67617807-9');
 </script>
+<script src="https://romantomjak.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
 
