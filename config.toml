@@ -1,4 +1,4 @@
-baseurl = "https://romantomjak.com"
+baseurl = "https://romantomjak.com/"
 title = "Notes on programming"
 uglyurls = true
 pygmentsUseClasses = true
@@ -8,4 +8,4 @@ copyright = "Copyright (c) 2018, Roman Tomjak; all rights reserved."
 
 [params]
   author = "Roman Tomjak"
-  avatar = "/images/mother-of-god.gif"
+  avatar = "images/mother-of-god.gif"

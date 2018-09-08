@@ -1,8 +1,8 @@
 <header class="header">
     <a href="/">
-        <img class="header__gif--static hidden" src="{{ with .Site.Params.avatar }}{{ replace . ".gif" ".png" }}{{ end }}"/>
+        <img class="header__gif--static hidden" src="{{ .Site.BaseURL }}{{ with .Site.Params.avatar }}{{ replace . ".gif" ".png" }}{{ end }}"/>
         <!-- https://giphy.com/gifs/vMAapjokHPLqa5DkCv -->
-        <img class="header__gif" src="{{ with .Site.Params.avatar }}{{ . }}{{ end }}"/>
+        <img class="header__gif" src="{{ .Site.BaseURL }}{{ with .Site.Params.avatar }}{{ . }}{{ end }}"/>
     </a>
     <h1 class="header__title">{{ .Site.Title }}</h1>
     <nav class="hidden">
