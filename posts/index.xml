@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Notes on programming</title>
-    <link>https://romantomjak.com/posts/</link>
+    <link>https://romantomjak.com/posts.html</link>
     <description>Recent content in Posts on Notes on programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
@@ -14,10 +14,10 @@
     
     <item>
       <title>TDD with Go</title>
-      <link>https://romantomjak.com/posts/tdd-with-go/</link>
+      <link>https://romantomjak.com/posts/tdd-with-go.html</link>
       <pubDate>Sun, 02 Sep 2018 15:20:03 +0100</pubDate>
       
-      <guid>https://romantomjak.com/posts/tdd-with-go/</guid>
+      <guid>https://romantomjak.com/posts/tdd-with-go.html</guid>
       <description>I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similar to C, but with memory safety and garbage collection.
  Test-driven development (TDD) is a software development technique that relies on very short, repetitive development cycles. Business requirements are turned into very specific test cases, then the software is improved until tests are passing.</description>
     </item>

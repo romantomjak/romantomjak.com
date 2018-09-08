@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Notes on programming</title>
-    <link>https://romantomjak.com/categories/</link>
+    <link>https://romantomjak.com/categories.html</link>
     <description>Recent content in Categories on Notes on programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
@@ -13,10 +13,10 @@
     
     <item>
       <title>Tdd</title>
-      <link>https://romantomjak.com/categories/tdd/</link>
+      <link>https://romantomjak.com/categories/tdd.html</link>
       <pubDate>Sun, 02 Sep 2018 15:20:03 +0100</pubDate>
       
-      <guid>https://romantomjak.com/categories/tdd/</guid>
+      <guid>https://romantomjak.com/categories/tdd.html</guid>
       <description></description>
     </item>
     
