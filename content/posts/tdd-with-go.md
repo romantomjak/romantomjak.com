@@ -5,6 +5,7 @@ draft: false
 tags: ["go"]
 categories: ["tdd"]
 summary: Short introduction to TDD with Go. Why I like TDD, what are the benefits of practising TDD and, of course, a small CLI tool that will convert words into military call letters using the Military phonetic spelling alphabet!
+aliases: ["/posts/tdd-with-go/"]
 ---
 
 I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similar to C, but with memory safety and garbage collection.
