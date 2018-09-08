@@ -1,8 +1,6 @@
 baseurl = "https://romantomjak.com/"
 title = "Notes on programming"
 uglyurls = true
-pygmentsUseClasses = true
-pygmentsCodeFences = true
 languageCode = "en-gb"
 copyright = "Copyright (c) 2018, Roman Tomjak; all rights reserved."
 
