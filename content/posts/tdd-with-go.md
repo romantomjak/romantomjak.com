@@ -315,7 +315,17 @@ func WordToCode(word string) string {
 }
 ```
 
-Ahhh... yes!
+Ahhh... yes! All green again.
+
+## Removing redundant tests
+
+A quick glance at the tests we've written so far reveals that we have a test for covering both individual lower and upper case letters as well as a test that covers converting whole words to call codes. Since `Test_Maps_Word_To_Codes` exercises both previous code paths, we can actually remove the redundant tests and test our code at a higher level!
+
+> Avoid testing implementation details, test behaviors.
+> 
+> --- *Ian Cooper*
+
+Removing redundant tests was one of those moments when things began to fall in place for me. I love those _Aha!_ moments.
 
 ## Building an executable
 
