@@ -272,7 +272,7 @@ code.language-sh {
 
 .post-list__link:hover .post-list__title {
     text-decoration: none;
-    color: #5badf0;
+    color: #46a5f3;
     -webkit-transition: all 0.15s ease;
     -moz-transition: all 0.15s ease;
     -ms-transition: all 0.15s ease;
@@ -311,7 +311,11 @@ code.language-sh {
 }
 
 .article a {
-    color: #5badf0;
+    color: #46a5f3;
+}
+
+.article a:hover {
+    color: #2a92e9;
 }
 
 .article__title {
