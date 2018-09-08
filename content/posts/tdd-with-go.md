@@ -25,7 +25,7 @@ Github repo for the unpatient peeps: [https://github.com/romantomjak/milpa](http
 
 Let's start by creating `milpa_test.go` and defining our test:
 
-```go
+```golang
 package main
 
 import (
@@ -49,14 +49,15 @@ and, of course, you will correct me that I haven't defined `LetterToCode`, but t
 Now, if we run our test suite it will obviously complain about `LetterToCode` being undefined and that's fair. Let's confirm our assumptions by running the test:
 
 ```sh
-go test
+$ go test
+./milpa_test.go:10:15: undefined: LetterToCode
 ```
 
 Yep!
 
 Let's fix this test by creating a `milpa.go` with the following content:
 
-```go
+```golang
 package main
 
 func LetterToCode(letter string) string {
@@ -70,7 +71,7 @@ Run our tests again and.. BOOM! Our first successful test! Right now this functi
 
 Making sure we correctly map single letter `R` is not really useful, so let's make sure we test for all mappings. In `milpa_test.go` add the following:
 
-```go
+```golang
 var TEST_CODES = map[string]string{
     "A": "Alpha",
     "B": "Bravo",
@@ -103,7 +104,7 @@ var TEST_CODES = map[string]string{
 
 Refactor our test method slightly to make use of our newly defined mappings:
 
-```go
+```golang
 func Test_Maps_Letters_To_Codes(t *testing.T) {
     for letter, code := range TEST_CODES {
         result := LetterToCode(letter)
@@ -122,7 +123,7 @@ Now our tests are calling the `LetterToCode` with all alphabet letters, but we'r
 
 Surely, another dict with mappings would be useful, but it's not [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)... Let's not worry about that now and go ahead and define it in `milpa.go`, right after the `package` statement:
 
-```go
+```golang
 package main
 
 var CODES = map[string]string{
@@ -134,7 +135,7 @@ I did not include the whole dictionary, but it's the same we have in `milpa_test
 
 Now modify the `LetterToCode` to use our newly defined mappings:
 
-```go
+```golang
 func LetterToCode(letter string) string {
     return CODES[letter]
 }
@@ -148,7 +149,7 @@ We're at the _Refactoring_ stage of the TDD lifecycle now and we definitely have
 
 In `milpa_test.go` delete the `TEST_CODES` mapping and change the test to use `CODES` defined in `milpa.go`:
 
-```go
+```golang
 func Test_Maps_Letters_To_Codes(t *testing.T) {
     for letter, code := range CODES {
         ...
@@ -162,7 +163,7 @@ That's better! We're no longer duplicating code and actually using mappings from
 
 Let's continue _improving_ our application by making sure that we don't modify symbols we're not aware of. In `milpa_test.go` add the following lines:
 
-```go
+```golang
 func Test_Ignores_Unknown_Symbols(t *testing.T) {
     symbols := []string{" ", ",", ";", "!"}
     for _, symbol := range symbols {
@@ -178,7 +179,7 @@ run the tests and... we've got work to do.
 
 Let's modify the `LetterToCode` function slightly and see if that makes the test pass:
 
-```go
+```golang
 func LetterToCode(letter string) string {
     if val, ok := CODES[letter]; ok {
         return val
@@ -193,7 +194,7 @@ run the tests again and... BOOM! All green! I'm starting to like this!
 
 What else can we improve? What happens when I call the function with lower case letters? I don't know! But let's test that! :)))
 
-```go
+```golang
 import (
     "strings"
     ...
@@ -216,7 +217,7 @@ func Test_Ignores_Case(t *testing.T) {
 
 Simplest thing to do would be to check if the letter is in lower case and convert it to upper case. That sounds sensible! Let's try:
 
-```go
+```golang
 import (
     "strings"
 )
@@ -241,7 +242,7 @@ Great success!
 
 Almost there! The last bit that I'm curious about is to see what happens when I have a bunch of words that I want to convert. Sounds like I would need another function for this... Let's start by speccing out the interface we would like to use:
 
-```go
+```golang
 func Test_Maps_Word_To_Codes(t *testing.T) {
     word := "Foo"
     want := "Foxtrot Oscar Oscar"
@@ -256,7 +257,7 @@ ah, but of course! We haven't defined `WordToCode`, but you already knew that, d
 
 Quick clickity-clacking leads to this:
 
-```go
+```golang
 func WordToCode(word string) string {
     return "Foxtrot Oscar Oscar"
 }
@@ -268,7 +269,7 @@ Brilliant!
 
 Right. Let's modify our test to assert for different outcomes:
 
-```go
+```golang
 func Test_Maps_Word_To_Codes(t *testing.T) {
     testCases := []struct {
         words string
@@ -287,7 +288,7 @@ func Test_Maps_Word_To_Codes(t *testing.T) {
 
 So... how do we imagine our function to work? I assume we will have some sort of buffer where we will append our call codes to and then just return the whole string. Sounds good? Let's try it!
 
-```go
+```golang
 import (
     "bytes"
     "strings"
@@ -319,7 +320,7 @@ Ahhh... yes!
 
 Now that our code is fully tested we can add a simple main method and finally compile it to a binary and run a e2e test :)
 
-```go
+```golang
 import (
     "bytes"
     "fmt"
@@ -345,7 +346,7 @@ func main() {
 Let's build that now:
 
 ```sh
-go build
+$ go build
 ```
 
 ... and now for the moment of truth:

@@ -9,9 +9,8 @@
     {{ .Hugo.Generator }}
     <title>{{ if .IsHome }}{{ .Title }}{{ else }}{{ .Title }} &middot; {{ .Site.Title }}{{ end }}</title>
     <!-- Thanks to https://favicon.io/ -->
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/highlight-js-ir-black.css">
+    <link rel="shortcut icon" href="{{ .Site.BaseURL }}favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ .Site.BaseURL }}images/apple-touch-icon.png">
+    <link rel="stylesheet" href="{{ .Site.BaseURL }}css/style.css">
 </head>
 <body>
