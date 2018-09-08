@@ -272,7 +272,7 @@ code.language-sh {
 
 .post-list__link:hover .post-list__title {
     text-decoration: none;
-    color: #5badf0;
+    color: #46a5f3;
     -webkit-transition: all 0.15s ease;
     -moz-transition: all 0.15s ease;
     -ms-transition: all 0.15s ease;
@@ -311,7 +311,11 @@ code.language-sh {
 }
 
 .article a {
-    color: #5badf0;
+    color: #46a5f3;
+}
+
+.article a:hover {
+    color: #2a92e9;
 }
 
 .article__title {
@@ -361,6 +365,10 @@ code.language-sh {
  * Media queries
  */
 @media (max-width: 700px) {
+    img {
+        max-width: 100%;
+    }
+
     .header {
         padding: 30px 20px;
     }
@@ -374,8 +382,25 @@ code.language-sh {
         margin-top: 10px;
     }
 
+    .home {
+        padding: 30px 45px;
+    }
+
+    .article {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .post-list__date {
+        display: none;
+    }
+
     .footer {
-        margin-top: 40px;
-        padding-bottom: 40px;
+        margin-top: 0;
+        padding-bottom: 25px;
+    }
+
+    .article + .footer {
+        margin-top: 45px;
     }
 }
