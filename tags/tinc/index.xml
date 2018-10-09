@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Notes on programming</title>
-    <link>https://romantomjak.com/</link>
-    <description>Recent content on Notes on programming</description>
+    <title>Tinc on Notes on programming</title>
+    <link>https://romantomjak.com/tags/tinc.html</link>
+    <description>Recent content in Tinc on Notes on programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
     <lastBuildDate>Tue, 09 Oct 2018 22:06:52 +0100</lastBuildDate>
     
-	<atom:link href="https://romantomjak.com/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://romantomjak.com/tags/tinc/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,16 +19,6 @@
       
       <guid>https://romantomjak.com/posts/hetzner-private-networking.html</guid>
       <description>Hetzner has a reputation for offering a sweet price/performance ratio, however, in a true Unix philosophy, it comes at a cost of having to do everything by yourself. Including Private Networking. Normally you only get one public IP and no private interfaces. I suspect they might have some clever routing rules in place for traffic to never leave the DC, but somehow I don&amp;rsquo;t really fancy sending unencrypted traffic over public IPs.</description>
-    </item>
-    
-    <item>
-      <title>TDD with Go</title>
-      <link>https://romantomjak.com/posts/tdd-with-go.html</link>
-      <pubDate>Sun, 02 Sep 2018 15:20:03 +0100</pubDate>
-      
-      <guid>https://romantomjak.com/posts/tdd-with-go.html</guid>
-      <description>I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similar to C, but with memory safety and garbage collection.
- Test-driven development (TDD) is a software development technique that relies on very short, repetitive development cycles. Business requirements are turned into very specific test cases, then the software is improved until tests are passing.</description>
     </item>
     
   </channel>

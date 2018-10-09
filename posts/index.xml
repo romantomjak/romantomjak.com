@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 02 Sep 2018 15:20:03 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 09 Oct 2018 22:06:52 +0100</lastBuildDate>
     
 	<atom:link href="https://romantomjak.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hetzner DIY Private Networking with tinc</title>
+      <link>https://romantomjak.com/posts/hetzner-private-networking.html</link>
+      <pubDate>Tue, 09 Oct 2018 22:06:52 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/posts/hetzner-private-networking.html</guid>
+      <description>Hetzner has a reputation for offering a sweet price/performance ratio, however, in a true Unix philosophy, it comes at a cost of having to do everything by yourself. Including Private Networking. Normally you only get one public IP and no private interfaces. I suspect they might have some clever routing rules in place for traffic to never leave the DC, but somehow I don&amp;rsquo;t really fancy sending unencrypted traffic over public IPs.</description>
+    </item>
     
     <item>
       <title>TDD with Go</title>

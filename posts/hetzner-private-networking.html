@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Roman Tomjak">
+    
+    <meta name="generator" content="Hugo 0.47" />
+    <title>Hetzner DIY Private Networking with tinc &middot; Notes on programming</title>
+    
+    <link rel="shortcut icon" href="https://romantomjak.com/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://romantomjak.com/images/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://romantomjak.com/css/style.css">
+    <link rel="stylesheet" href="https://romantomjak.com/css/syntax/atom-one-dark.css">
+    
+</head>
+<body>
+
+
+<header class="header">
+    <a href="/">
+        <img class="header__gif--static hidden" src="https://romantomjak.com/images/mother-of-god.png"/>
+        
+        <img class="header__gif" src="https://romantomjak.com/images/mother-of-god.gif"/>
+    </a>
+    <h1 class="header__title">Notes on programming</h1>
+    <nav class="hidden">
+        <ul class="nav-primary">
+            <li><a class="nav-primary__link" href="/">blog</a>/</li>
+            <li><a class="nav-primary__link" href="/code">code</a>/</li>
+            <li><a class="nav-primary__link" href="/about">me</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<main class="article">
+    <h1 class="article__title">Hetzner DIY Private Networking with tinc</h1>
+    <article class="article__content">
+        <header class="article__header">
+            <time datetime="2018-10-09T22:06:52.000&#43;01:00">October 9, 2018</time> &middot; 4 min read
+        </header>
+        
+
+<p><a href="https://www.hetzner.com/">Hetzner</a> has a reputation for offering a sweet price/performance ratio, however, in a true Unix philosophy, it comes at a cost of having to do everything by yourself. Including Private Networking. Normally you only get one public IP and no private interfaces. I suspect they might have some clever routing rules in place for traffic to never leave the DC, but somehow I don&rsquo;t really fancy sending unencrypted traffic over public IPs.</p>
+
+<p>Luckily, I am a guy who has recompiled his kernel over a dozen of times because I&rsquo;ve forgotten to enable a feature! Here I&rsquo;m obviously referring to my hard-working persona and not my 640K memory, which btw, should be enough for everyone, haha!</p>
+
+<h2 id="tinc-vs-traditional-vpn-solutions">tinc vs traditional VPN solutions</h2>
+
+<p>Usually, Virtual Private Network (VPN) solutions have a client-server architecture that gives you a star shaped topology, where everything has to go through a central node, but that&rsquo;s not quite what I want. I want a peer-to-peer network where every node is connected to all the other nodes. Think LAN, only more resilient.</p>
+
+
+<figure class="center">
+    
+        <img src="/media/network-topology.png" alt="Network Topology" width="680" />
+    
+    
+</figure>
+
+
+<p>Full mesh routing via tunnelling and encryption is exactly what <a href="http://tinc-vpn.org/">tinc</a> does. Additionally, whenever possible, it will always send traffic directly to the destination, without going through any intermediate hops and because the VPN appears as a normal network device, there is no need to adapt any existing software! #mindblown</p>
+
+<h2 id="private-networking-and-outgoing-traffic-costs">Private Networking and Outgoing Traffic costs</h2>
+
+<p>If you&rsquo;re wondering whether this DIY Private Network will count against your outgoing traffic, then according to <a href="https://wiki.hetzner.de/index.php/CloudServer/en">Hetzner</a> the answer is <strong>NO</strong> (emphasis mine):</p>
+
+<blockquote>
+<p>We only bill for outgoing traffic. Incoming and internal traffic is free. <strong>Internal traffic includes other Hetzner Cloud servers</strong>, other Hetzner Online dedicated root servers, and other Hetzner Online servers, services, or web hosting packages.</p>
+</blockquote>
+
+<h2 id="diy-private-network-vs-digitalocean-s-private-networking">DIY Private Network vs DigitalOcean&rsquo;s Private Networking</h2>
+
+<p>I had great fun with <code>tcpdump</code>, <code>iptables</code> and <code>PKCS</code> while working on this DIY private network. And by great fun, I of course mean me not reading the docs, misconfiguring things and then staring at the screen dumbfoundedly when things don&rsquo;t work as expected. So, naturally, this would all be a big waste of time if I wouldn&rsquo;t benchmark it against something! I picked <a href="https://blog.digitalocean.com/introducing-private-networking/">DigitalOcean</a> as they offer Private Networking as a simple tick box when creating a droplet. Ughhh, that cuts deep.</p>
+
+<p>My objective is to run two tests - one where traffic goes over an encrypted tunnel and one without encryption. The outcome will be the average of 5 runs for each test.</p>
+
+<p>Here&rsquo;s my test setup:</p>
+
+<ul>
+<li>Hetzner nodes will be in Falkenstein, Germany</li>
+<li>DigitalOcean nodes will be in Frankfurt, Germany</li>
+<li>Tested with 2 GB RAM and 1 vCPU nodes</li>
+</ul>
+
+<p>Both DC locations are reasonably close to each other, so for me this will be as fair as it gets. Here&rsquo;s my <a href="https://github.com/romantomjak/ansible-roles/tree/master/tinc">example playbook</a> that I used for creating the mesh networks.</p>
+
+<h3 id="hetzner">Hetzner</h3>
+
+<p>First test was no encryption run between two nodes. Allegedly, this still counts as <em>internal</em> traffic, so some black art has been applied. In any case, my test runs were clocking in at about <strong>6.5 Gbits/sec</strong>:</p>
+
+<pre><code class="language-sh">$ iperf -c x.x.x.x
+------------------------------------------------------------
+Client connecting to x.x.x.x, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local x.x.x.x port 47526 connected with x.x.x.x port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  7.12 GBytes  6.12 Gbits/sec
+</code></pre>
+
+<p>OMG, do you see it? 6.12 Gbits/sec!</p>
+
+<p>Second test was over an encrypted tunnel between two nodes, averaging at about 390 Mbit/s:</p>
+
+<pre><code class="language-sh">$ iperf -c 10.10.1.x
+------------------------------------------------------------
+Client connecting to 10.10.1.x, TCP port 5001
+TCP window size: 45.0 KByte (default)
+------------------------------------------------------------
+[  3] local 10.10.1.x port 43714 connected with 10.10.1.x port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   460 MBytes   386 Mbits/sec
+</code></pre>
+
+<h3 id="digitalocean">DigitalOcean</h3>
+
+<p>Same process - average of 5 runs for each test. One caveat tho - here I used the provided Private Network to run my tests.</p>
+
+<p>Bandwidth was averaging at about 1.4 Gbits/s for unencrypted traffic:</p>
+
+<pre><code class="language-sh">$ iperf -c x.x.x.x
+------------------------------------------------------------
+Client connecting to x.x.x.x, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local x.x.x.x port 59560 connected with x.x.x.x port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  1.57 GBytes  1.35 Gbits/sec
+</code></pre>
+
+<p>Things weren&rsquo;t looking so great over an encrypted tunnel, <em>only</em> 200 Mbit/sec compared to Hetzner&rsquo;s 390 Mbit/s:</p>
+
+<pre><code class="language-sh">$ iperf -c 10.10.1.x
+------------------------------------------------------------
+Client connecting to 10.10.1.x, TCP port 5001
+TCP window size: 45.0 KByte (default)
+------------------------------------------------------------
+[  3] local 10.10.1.x port 46910 connected with 10.10.1.x port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   237 MBytes   199 Mbits/sec
+</code></pre>
+
+<p>So, yeah. Hetzner kicks ass.</p>
+
+    </article>
+</main>
+
+<footer class="footer">
+    <nav>
+        <ul class="nav-secondary">
+            <li>
+                <a href="https://github.com/romantomjak">
+                    <img class="nav-secondary__icon" src="https://romantomjak.com/images/github.svg" alt="Github" />
+                </a>
+            </li>
+            <li>
+                <a href="https://twitter.com/romantomjak">
+                    <img class="nav-secondary__icon" src="https://romantomjak.com/images/twitter.svg" alt="Twitter" />
+                </a>
+            </li>
+            <li>
+                <a href="https://www.linkedin.com/in/romanstomjaks">
+                    <img class="nav-secondary__icon" src="https://romantomjak.com/images/linkedin.svg" alt="LinkedIn" />
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <p>Copyright &copy; 2018 Roman Tomjak</p>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67617807-9"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-67617807-9');
+</script>
+<script src="https://romantomjak.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+
