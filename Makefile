@@ -14,6 +14,9 @@ init-gh-pages-branch:
 build: clean
 	hugo
 
+new-post:
+	@echo "usage: hugo new posts/my-post.md"
+
 clean:
 	rm -rf public
 	mkdir public
