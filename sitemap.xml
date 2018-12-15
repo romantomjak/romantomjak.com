@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://romantomjak.com/posts/golang-parse-and-return-json.html</loc>
+    <lastmod>2018-12-14T23:13:14+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://romantomjak.com/posts/hetzner-private-networking.html</loc>
     <lastmod>2018-10-09T22:06:52+01:00</lastmod>
   </url>
@@ -24,8 +29,8 @@
   </url>
   
   <url>
-    <loc>https://romantomjak.com/tags/go.html</loc>
-    <lastmod>2018-09-02T15:20:03+01:00</lastmod>
+    <loc>https://romantomjak.com/categories/go.html</loc>
+    <lastmod>2018-12-14T23:13:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -43,19 +48,31 @@
   
   <url>
     <loc>https://romantomjak.com/</loc>
-    <lastmod>2018-10-09T22:06:52+01:00</lastmod>
+    <lastmod>2018-12-14T23:13:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://romantomjak.com/posts.html</loc>
-    <lastmod>2018-10-09T22:06:52+01:00</lastmod>
+    <lastmod>2018-12-14T23:13:14+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://romantomjak.com/tags/rest.html</loc>
+    <lastmod>2018-12-14T23:13:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://romantomjak.com/tags.html</loc>
     <lastmod>2018-10-09T22:06:52+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://romantomjak.com/tags/tdd.html</loc>
+    <lastmod>2018-12-14T23:13:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
