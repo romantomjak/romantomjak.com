@@ -2,8 +2,7 @@
 title: "TDD with Go"
 date: 2018-09-02T15:20:03+01:00
 draft: false
-tags: ["go"]
-categories: ["tdd"]
+categories: ["go", "tdd"]
 summary: Short introduction to TDD with Go. Why I like TDD, what are the benefits of practising TDD and, of course, a small CLI tool that will convert words into military call letters using the Military phonetic spelling alphabet!
 aliases: ["/posts/tdd-with-go/"]
 ---
