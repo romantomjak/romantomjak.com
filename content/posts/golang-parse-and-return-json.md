@@ -1,7 +1,7 @@
 ---
 title: "Parsing and returning JSON in Go"
 date: 2018-12-15T11:21:06Z
-draft: false
+draft: true
 tags: ["rest"]
 categories: ["go"]
 summary: Sending and receiving JSON is a pretty common thing to do, but coming from a duck typed language it may seem like a rather difficult thing to do and Go documentation, albeit complete, is not always the easiest thing to understand.
