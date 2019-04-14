@@ -1,4 +1,14 @@
 .PHONY: run init-gh-pages-branch build clean deploy
+.DEFAULT_GOAL := help
+
+help:
+	@printf "%s\n" "Build targets:"
+	@printf "  %-20s - %s\n" "run" "Run http server"
+	@printf "  %-20s - %s\n" "init-gh-pages-branch" "Initializes GH pages branch"
+	@printf "  %-20s - %s\n" "build" "Generate static website and exit"
+	@printf "  %-20s - %s\n" "new-post" "Create a new blog post"
+	@printf "  %-20s - %s\n" "clean" "Delete generated files"
+	@printf "  %-20s - %s\n" "deploy" "Commit and push to GH pages"
 
 run:
 	hugo server -D
