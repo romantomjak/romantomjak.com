@@ -1,0 +1,13 @@
+{{ partial "header.html" . }}
+
+<main class="article">
+    <h1 class="article__title">{{ .Title }}</h1>
+    <article class="article__content">
+        <header class="article__header">
+            <time datetime="{{ .Date.Format "2006-01-02T15:04:05.000-07:00" }}">{{ .Date.Format "January 2, 2006" }}</time> &middot; {{ .ReadingTime }} min read
+        </header>
+        {{ .Content }}
+    </article>
+</main>
+
+{{ partial "footer.html" . }}
