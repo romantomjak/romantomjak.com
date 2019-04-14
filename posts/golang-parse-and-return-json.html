@@ -7,11 +7,10 @@
     <meta name="author" content="Roman Tomjak">
     
     <meta name="generator" content="Hugo 0.47" />
-    <title>Notes on programming</title>
+    <title>Parsing and returning JSON in Go &middot; Notes on programming</title>
     
     <link rel="shortcut icon" href="https://romantomjak.com/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="https://romantomjak.com/images/apple-touch-icon.png">
-    <link rel="alternate" type="application/rss+xml" href="https://romantomjak.com/index.xml" title="Notes on programming" />
     <link rel="stylesheet" href="https://romantomjak.com/css/style.css">
     <link rel="stylesheet" href="https://romantomjak.com/css/syntax/atom-one-dark.css">
     
@@ -36,42 +35,42 @@
 </header>
 
 
-<main class="home">
-    
+<main class="article">
+    <h1 class="article__title">Parsing and returning JSON in Go</h1>
+    <article class="article__content">
+        <header class="article__header">
+            <time datetime="2018-12-15T11:21:06.000&#43;00:00">December 15, 2018</time> &middot; 2 min read
+        </header>
+        
 
-<ul class="post-list">
-    
-    <li class="post-list__item">
-        <a class="post-list__link" href="/posts/golang-parse-and-return-json.html">
-            <div class="post-list__header">
-                <h3 class="post-list__title">Parsing and returning JSON in Go</h3>
-                <aside class="post-list__date">Dec 15</aside>
-            </div>
-            <p class="post-list__summary">Sending and receiving JSON is a pretty common thing to do, but coming from a duck typed language it may seem like a rather difficult thing to do and Go documentation, albeit complete, is not always the easiest thing to understand.</p>
-        </a>
-    </li>
-    
-    <li class="post-list__item">
-        <a class="post-list__link" href="/posts/hetzner-private-networking.html">
-            <div class="post-list__header">
-                <h3 class="post-list__title">Hetzner DIY Private Networking with tinc</h3>
-                <aside class="post-list__date">Oct 9</aside>
-            </div>
-            <p class="post-list__summary">Hetzner is lacking Private Networking feature. Tinc is a VPN daemon that offers full mesh routing. Roman is a guy that has recompiled Kernel over a dozen times because he forgot to enable a feature. Ingredients for great success!</p>
-        </a>
-    </li>
-    
-    <li class="post-list__item">
-        <a class="post-list__link" href="/posts/tdd-with-go.html">
-            <div class="post-list__header">
-                <h3 class="post-list__title">TDD with Go</h3>
-                <aside class="post-list__date">Sep 2</aside>
-            </div>
-            <p class="post-list__summary">Short introduction to TDD with Go. Why I like TDD, what are the benefits of practising TDD and, of course, a small CLI tool that will convert words into military call letters using the Military phonetic spelling alphabet!</p>
-        </a>
-    </li>
-    
+<p>Imagine you&rsquo;re working for the worlds largest Wool Sock provider <em>WOOSOK</em>, handling on average 90k requests a day through your eCommerce platform of choice. It&rsquo;s 11 AM on a Monday morning, you&rsquo;re browsing Hacker News, when suddenly your boss Slacks you asking why &ldquo;the website is slow&rdquo;. You open the home page of WOOSOK and indeed, it took 8s to load the home page.</p>
+
+<p>Twenty minutes later you&rsquo;ve narrowed it down to a particular URL that when visited generates a list of all Purchase Orders ever created. Quick look at the HTTP response times in Grafana reveals that this has been happening for a while now, exactly at 11 AM.</p>
+
+<p>Turns out, your New Zealand yarn provider has implemented automated PO approvals with a nifty Selenium script that runs at midnight. The script visits the aforementioned URL, opens the detail view of an unapproved PO, approves it and then goes back and loads the dangerous URL again. This goes on until it has approved all POs for the day, which on average is around 100.</p>
+
+<p>[ XKCD IMAGE BEGIN ]</p>
+
+<p>&ldquo;13 minutes of outage during our peak sales hours is outrageous&rdquo;, yells your boss. &ldquo;You have to do something!&rdquo;. You comfort him and tell him you already have a plan - you&rsquo;re going to extract all PO related functionality into a microservice. It will not affect the website and will allow the provider to continue to use his script.</p>
+
+<p>[ EOF XKCD IMAGE ]</p>
+
+<h2 id="marshaling-json-data">Marshaling JSON data</h2>
+
+<p>This functionality is provided by the standard library package <code>encoding/json</code>. Go is statically typed, meaning, that compiler needs to know what data types are you going to use at compile time.</p>
+
+<ul>
+<li>talk about structs</li>
+<li>how to exclude fields</li>
 </ul>
+
+<h2 id="unmarshaling-json-data">Unmarshaling JSON data</h2>
+
+<ul>
+<li>parsing into interface{}</li>
+</ul>
+
+    </article>
 </main>
 
 <footer class="footer">

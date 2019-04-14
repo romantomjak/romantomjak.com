@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Go on Notes on programming</title>
-    <link>https://romantomjak.com/categories/go.html</link>
-    <description>Recent content in Go on Notes on programming</description>
+    <title>Rest on Notes on programming</title>
+    <link>https://romantomjak.com/tags/rest.html</link>
+    <description>Recent content in Rest on Notes on programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
     <lastBuildDate>Sat, 15 Dec 2018 11:21:06 +0000</lastBuildDate>
     
-	<atom:link href="https://romantomjak.com/categories/go/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://romantomjak.com/tags/rest/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,16 +20,6 @@
       <guid>https://romantomjak.com/posts/golang-parse-and-return-json.html</guid>
       <description>Imagine you&amp;rsquo;re working for the worlds largest Wool Sock provider WOOSOK, handling on average 90k requests a day through your eCommerce platform of choice. It&amp;rsquo;s 11 AM on a Monday morning, you&amp;rsquo;re browsing Hacker News, when suddenly your boss Slacks you asking why &amp;ldquo;the website is slow&amp;rdquo;. You open the home page of WOOSOK and indeed, it took 8s to load the home page.
 Twenty minutes later you&amp;rsquo;ve narrowed it down to a particular URL that when visited generates a list of all Purchase Orders ever created.</description>
-    </item>
-    
-    <item>
-      <title>TDD with Go</title>
-      <link>https://romantomjak.com/posts/tdd-with-go.html</link>
-      <pubDate>Sun, 02 Sep 2018 15:20:03 +0100</pubDate>
-      
-      <guid>https://romantomjak.com/posts/tdd-with-go.html</guid>
-      <description>I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similar to C, but with memory safety and garbage collection.
- Test-driven development (TDD) is a software development technique that relies on very short, repetitive development cycles. Business requirements are turned into very specific test cases, then the software is improved until tests are passing.</description>
     </item>
     
   </channel>

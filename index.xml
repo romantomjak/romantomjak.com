@@ -7,10 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 09 Oct 2018 22:06:52 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 14 Apr 2019 22:11:49 +0100</lastBuildDate>
     
 	<atom:link href="https://romantomjak.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Privacy Policy</title>
+      <link>https://romantomjak.com/appstore/countdowns-privacy.html</link>
+      <pubDate>Sun, 14 Apr 2019 22:11:49 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/appstore/countdowns-privacy.html</guid>
+      <description>Roman Tomjak built the Countdowns app as a Free app. This SERVICE is provided by Roman Tomjak at no cost and is intended for use as is.
+This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
+If you choose to use my Service, then you agree to the collection and use of information in relation to this policy.</description>
+    </item>
+    
+    <item>
+      <title>Parsing and returning JSON in Go</title>
+      <link>https://romantomjak.com/posts/golang-parse-and-return-json.html</link>
+      <pubDate>Sat, 15 Dec 2018 11:21:06 +0000</pubDate>
+      
+      <guid>https://romantomjak.com/posts/golang-parse-and-return-json.html</guid>
+      <description>Imagine you&amp;rsquo;re working for the worlds largest Wool Sock provider WOOSOK, handling on average 90k requests a day through your eCommerce platform of choice. It&amp;rsquo;s 11 AM on a Monday morning, you&amp;rsquo;re browsing Hacker News, when suddenly your boss Slacks you asking why &amp;ldquo;the website is slow&amp;rdquo;. You open the home page of WOOSOK and indeed, it took 8s to load the home page.
+Twenty minutes later you&amp;rsquo;ve narrowed it down to a particular URL that when visited generates a list of all Purchase Orders ever created.</description>
+    </item>
     
     <item>
       <title>Hetzner DIY Private Networking with tinc</title>
