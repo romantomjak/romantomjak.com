@@ -48,7 +48,7 @@ func AccessLog(logger *log.Logger) Middleware {
 
 Whooa... quite a lot going on there! Let's try to unpack it.
 
-The most interesting bit here of course is the _Printf_ statement that we injected just before calling the request handler. In fact, it is quite possible to create a middleware that refuses to serve requests altogether. Like when an HTTP header is missing or rate limit was exceeded, etc.
+The most interesting bit here, of course, is the _Printf_ statement that we injected just before calling the request handler. In fact, it is quite possible to create a middleware that refuses to serve requests altogether. Like when an HTTP header is missing or rate limit was exceeded, etc.
 
 We can see our good 'ol `Middleware` type at work - when `AccessLog` is called, it will return the wrapped function, but because it also happens to be a closure - it will be able to use injected logger to log details about the request.
 
