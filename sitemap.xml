@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://romantomjak.com/posts/go-http-middleware.html</loc>
+    <lastmod>2019-08-11T19:06:57+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://romantomjak.com/appstore/countdowns-privacy.html</loc>
     <lastmod>2019-04-14T22:11:49+01:00</lastmod>
   </url>
@@ -36,7 +41,7 @@
   
   <url>
     <loc>https://romantomjak.com/categories/go.html</loc>
-    <lastmod>2018-09-02T15:20:03+01:00</lastmod>
+    <lastmod>2019-08-11T19:06:57+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -47,20 +52,32 @@
   </url>
   
   <url>
+    <loc>https://romantomjak.com/tags/http.html</loc>
+    <lastmod>2019-08-11T19:06:57+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://romantomjak.com/categories/infrastructure.html</loc>
     <lastmod>2018-10-09T22:06:52+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>https://romantomjak.com/tags/middleware.html</loc>
+    <lastmod>2019-08-11T19:06:57+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://romantomjak.com/</loc>
-    <lastmod>2019-04-14T22:11:49+01:00</lastmod>
+    <lastmod>2019-08-11T19:06:57+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://romantomjak.com/posts.html</loc>
-    <lastmod>2018-10-09T22:06:52+01:00</lastmod>
+    <lastmod>2019-08-11T19:06:57+01:00</lastmod>
     <priority>0</priority>
   </url>
   

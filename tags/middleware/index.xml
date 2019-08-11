@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Go on Notes on programming</title>
-    <link>https://romantomjak.com/categories/go.html</link>
-    <description>Recent content in Go on Notes on programming</description>
+    <title>Middleware on Notes on programming</title>
+    <link>https://romantomjak.com/tags/middleware.html</link>
+    <description>Recent content in Middleware on Notes on programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
     <lastBuildDate>Sun, 11 Aug 2019 19:06:57 +0100</lastBuildDate>
     
-	<atom:link href="https://romantomjak.com/categories/go/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://romantomjak.com/tags/middleware/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,16 +20,6 @@
       <guid>https://romantomjak.com/posts/go-http-middleware.html</guid>
       <description>I was working on an HTML website for a Go project and like always, I started by extending the NGINX image, but then it hit me&amp;hellip; what if I replaced NGINX with Go&amp;rsquo;s HTTP server?!
  Immediately after trying out this profane idea I run into an issue where by default you don&amp;rsquo;t get any HTTP logging facilities, but luckily this is very easy to correct using (you guessed it!</description>
-    </item>
-    
-    <item>
-      <title>TDD with Go</title>
-      <link>https://romantomjak.com/posts/tdd-with-go.html</link>
-      <pubDate>Sun, 02 Sep 2018 15:20:03 +0100</pubDate>
-      
-      <guid>https://romantomjak.com/posts/tdd-with-go.html</guid>
-      <description>I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similar to C, but with memory safety and garbage collection.
- Test-driven development (TDD) is a software development technique that relies on very short, repetitive development cycles. Business requirements are turned into very specific test cases, then the software is improved until tests are passing.</description>
     </item>
     
   </channel>

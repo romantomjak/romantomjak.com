@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Roman Tomjak">
+    
+    <meta name="generator" content="Hugo 0.47" />
+    <title>Go HTTP Middleware &middot; Notes on programming</title>
+    
+    <link rel="shortcut icon" href="https://romantomjak.com/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://romantomjak.com/images/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://romantomjak.com/css/style.css">
+    <link rel="stylesheet" href="https://romantomjak.com/css/syntax/atom-one-dark.css">
+    
+</head>
+<body>
+
+
+<header class="header">
+    <a href="/">
+        <img class="header__gif--static hidden" src="https://romantomjak.com/images/mother-of-god.png"/>
+        
+        <img class="header__gif" src="https://romantomjak.com/images/mother-of-god.gif"/>
+    </a>
+    <h1 class="header__title">Notes on programming</h1>
+    <nav class="hidden">
+        <ul class="nav-primary">
+            <li><a class="nav-primary__link" href="/">blog</a>/</li>
+            <li><a class="nav-primary__link" href="/code">code</a>/</li>
+            <li><a class="nav-primary__link" href="/about">me</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<main class="article">
+    <h1 class="article__title">Go HTTP Middleware</h1>
+    <article class="article__content">
+        <header class="article__header">
+            <time datetime="2019-08-11T19:06:57.000&#43;01:00">August 11, 2019</time> &middot; 3 min read
+        </header>
+        
+
+<p>I was working on an HTML website for a Go project and like always, I started by extending the NGINX image, but then it hit me&hellip; what if I replaced NGINX with Go&rsquo;s HTTP server?!</p>
+
+<div style="width:100%;height:0;padding-bottom:43%;position:relative;"><iframe src="https://giphy.com/embed/idKeY3nvmdIsM" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+
+<p>Immediately after trying out this profane idea I run into an issue where by default you don&rsquo;t get any HTTP logging facilities, but luckily this is very easy to correct using (you guessed it!) HTTP middleware.</p>
+
+<h2 id="middle-what">Middle-what?</h2>
+
+<p>Middleware in the web development world is software that sits between the server and the applications running on top of it. Most often it&rsquo;s just a function that wraps and replaces another function. It can be used to inject additional functionality to one or more functions and it is sometimes called <em>plumbing</em>, as it connects two applications together so data can be interchanged between the two.</p>
+
+<p>Common middleware examples include database middleware, session middleware, rate limiting middleware, and so on.</p>
+
+<h2 id="the-middleware-type">The Middleware type</h2>
+
+<p>We&rsquo;re going to use the <code>Middleware</code> type to describe a function that takes and returns an <code>http.Handler</code>:</p>
+
+<pre><code class="language-go">type Middleware func(http.Handler) http.Handler
+</code></pre>
+
+<p>I&rsquo;d like to mention here that coming from dynamically typed languages - it is very refreshing to define and use your own custom types to express an idiom.</p>
+
+<h2 id="http-access-log-middleware">HTTP access log middleware</h2>
+
+<p>Access log is simply a location (usually a file) were HTTP server logs details about incoming requests. It&rsquo;s useful for monitoring nefarious behavior, User Agents used to access the site, approximate geographical location of the users and so on. Most commonly the HTTP method, Path, User Agent and IP address are recorded.</p>
+
+<p>Here&rsquo;s an adapted example from Mat Ryer&rsquo;s article about <a href="https://medium.com/@matryer/writing-middleware-in-golang-and-how-go-makes-it-so-much-fun-4375c1246e81">go middleware</a>:</p>
+
+<pre><code class="language-go">func AccessLog(logger *log.Logger) Middleware {
+    return func(h http.Handler) http.Handler {
+        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+            logger.Printf(&quot;%s - \&quot;%s %s %s\&quot; %q\n&quot;, r.RemoteAddr, r.Method, r.URL.Path, r.Proto, r.UserAgent())
+            h.ServeHTTP(w, r)
+        })
+    }
+}
+</code></pre>
+
+<p>Whooa&hellip; quite a lot going on there! Let&rsquo;s try to unpack it.</p>
+
+<p>The most interesting bit here, of course, is the <em>Printf</em> statement that we injected just before calling the request handler. In fact, it is quite possible to create a middleware that refuses to serve requests altogether. Like when an HTTP header is missing or rate limit was exceeded, etc.</p>
+
+<p>We can see our good &lsquo;ol <code>Middleware</code> type at work - when <code>AccessLog</code> is called, it will return the wrapped function, but because it also happens to be a closure - it will be able to use injected logger to log details about the request.</p>
+
+<h2 id="how-to-use-it">How to use it</h2>
+
+<p>Now, we could of course manually wrap each function, but that would quickly get out of hand. Instead, let&rsquo;s create (yet another) function that will <em>chain</em> the middlewares together automatically and oooh, what&rsquo;s that! It&rsquo;s the <code>Middleware</code> type!</p>
+
+<pre><code class="language-go">func WithMiddleware(h http.Handler, middlewares ...Middleware) http.Handler {
+    for _, middleware := range middlewares {
+        h = middleware(h)
+    }
+    return h
+}
+</code></pre>
+
+<p>This allows us to do some pretty cool stuff like chaining multiple middlewares:</p>
+
+<pre><code class="language-go">http.Handle(&quot;/&quot;, WithMiddleware(indexHandler, CheckSession(db), AccessLog(logger)))
+</code></pre>
+
+<h2 id="testing-the-middleware">Testing the middleware</h2>
+
+<p>Our new middleware can also be very easily tested because we didn’t break the <code>http.Handler</code> interface:</p>
+
+<pre><code class="language-go">func TestMiddleware_AccessLog(t *testing.T) {
+    req, _ := http.NewRequest(&quot;GET&quot;, &quot;/&quot;, nil)
+    resp := httptest.NewRecorder()
+
+    buf := new(bytes.Buffer)
+    logger := log.New(buf, &quot;&quot;, log.LstdFlags)
+    WithMiddleware(indexHandler(), AccessLog(logger)).ServeHTTP(resp, req)
+
+    haystack := buf.String()
+    needle := &quot;GET / HTTP/1.1&quot;
+    if !strings.Contains(haystack, needle) {
+        t.Errorf(&quot;expected %+v to contain %q but it didnt&quot;, haystack, needle)
+    }
+}
+</code></pre>
+
+<p>This means we can apply our middleware wherever the <code>http.Handler</code> interface is used!</p>
+
+    </article>
+</main>
+
+<footer class="footer">
+    <nav>
+        <ul class="nav-secondary">
+            <li>
+                <a href="https://github.com/romantomjak">
+                    <img class="nav-secondary__icon" src="https://romantomjak.com/images/github.svg" alt="Github" />
+                </a>
+            </li>
+            <li>
+                <a href="https://twitter.com/romantomjak">
+                    <img class="nav-secondary__icon" src="https://romantomjak.com/images/twitter.svg" alt="Twitter" />
+                </a>
+            </li>
+            <li>
+                <a href="https://www.linkedin.com/in/romanstomjaks">
+                    <img class="nav-secondary__icon" src="https://romantomjak.com/images/linkedin.svg" alt="LinkedIn" />
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <p>Copyright &copy; 2018 Roman Tomjak</p>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67617807-9"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-67617807-9');
+</script>
+<script src="https://romantomjak.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+

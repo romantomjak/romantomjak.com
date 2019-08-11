@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 14 Apr 2019 22:11:49 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 11 Aug 2019 19:06:57 +0100</lastBuildDate>
     
 	<atom:link href="https://romantomjak.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go HTTP Middleware</title>
+      <link>https://romantomjak.com/posts/go-http-middleware.html</link>
+      <pubDate>Sun, 11 Aug 2019 19:06:57 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/posts/go-http-middleware.html</guid>
+      <description>I was working on an HTML website for a Go project and like always, I started by extending the NGINX image, but then it hit me&amp;hellip; what if I replaced NGINX with Go&amp;rsquo;s HTTP server?!
+ Immediately after trying out this profane idea I run into an issue where by default you don&amp;rsquo;t get any HTTP logging facilities, but luckily this is very easy to correct using (you guessed it!</description>
+    </item>
     
     <item>
       <title>Privacy Policy</title>
