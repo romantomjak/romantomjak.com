@@ -49,22 +49,16 @@
 
 <p>Immediately after trying out this profane idea I run into an issue where by default you don&rsquo;t get any HTTP logging facilities, but luckily this is very easy to correct using (you guessed it!) HTTP middleware.</p>
 
-<h2 id="middle-what">Middle-what?</h2>
-
-<p>Middleware in the web development world is software that sits between the server and the applications running on top of it. Most often it&rsquo;s just a function that wraps and replaces another function. It can be used to inject additional functionality to one or more functions and it is sometimes called <em>plumbing</em>, as it connects two applications together so data can be interchanged between the two.</p>
-
-<p>Common middleware examples include database middleware, session middleware, rate limiting middleware, and so on.</p>
-
 <h2 id="the-middleware-type">The Middleware type</h2>
 
-<p>We&rsquo;re going to use the <code>Middleware</code> type to describe a function that takes and returns an <code>http.Handler</code>:</p>
+<p>Middleware can be used to inject additional functionality to one or more functions. Common middleware examples include database middleware, session middleware, rate limiting middleware, and so on. Most often it’s just a function that wraps and replaces another function. We’re going to define a <code>Middleware</code> type to describe a function that takes and returns an <code>http.Handler</code>:</p>
 
 <pre><code class="language-go">type Middleware func(http.Handler) http.Handler
 </code></pre>
 
-<p>I&rsquo;d like to mention here that coming from dynamically typed languages - it is very refreshing to define and use your own custom types to express an idiom.</p>
+<p>I&rsquo;d like to make a point here: coming from dynamically typed languages, it is very refreshing to be able to define and use your own custom types to express an idiom!</p>
 
-<h2 id="http-access-log-middleware">HTTP access log middleware</h2>
+<h2 id="access-log-middleware">Access Log Middleware</h2>
 
 <p>Access log is simply a location (usually a file) were HTTP server logs details about incoming requests. It&rsquo;s useful for monitoring nefarious behavior, User Agents used to access the site, approximate geographical location of the users and so on. Most commonly the HTTP method, Path, User Agent and IP address are recorded.</p>
 
@@ -80,15 +74,13 @@
 }
 </code></pre>
 
-<p>Whooa&hellip; quite a lot going on there! Let&rsquo;s try to unpack it.</p>
+<p>The most interesting bit here, of course, is the <em>Printf</em> statement that we injected just before calling the real handler. In fact, it is quite possible to create a middleware that refuses to serve requests altogether. Like when an HTTP header is missing or rate limit was exceeded, etc.</p>
 
-<p>The most interesting bit here, of course, is the <em>Printf</em> statement that we injected just before calling the request handler. In fact, it is quite possible to create a middleware that refuses to serve requests altogether. Like when an HTTP header is missing or rate limit was exceeded, etc.</p>
-
-<p>We can see our good &lsquo;ol <code>Middleware</code> type at work - when <code>AccessLog</code> is called, it will return the wrapped function, but because it also happens to be a closure - it will be able to use injected logger to log details about the request.</p>
+<p>We also see our good &lsquo;ol <code>Middleware</code> type at work - when <code>AccessLog</code> is called, it will return the wrapped function (our Middleware), but because it also happens to be a closure - it will be able to use injected logger to log details about the request.</p>
 
 <h2 id="how-to-use-it">How to use it</h2>
 
-<p>Now, we could of course manually wrap each function, but that would quickly get out of hand. Instead, let&rsquo;s create (yet another) function that will <em>chain</em> the middlewares together automatically and oooh, what&rsquo;s that! It&rsquo;s the <code>Middleware</code> type!</p>
+<p>Now, we could, of course, manually wrap each function, but that would quickly get out of hand. Instead, let&rsquo;s create (yet another) function that will <em>chain</em> the middlewares together automatically:</p>
 
 <pre><code class="language-go">func WithMiddleware(h http.Handler, middlewares ...Middleware) http.Handler {
     for _, middleware := range middlewares {
@@ -123,7 +115,7 @@
 }
 </code></pre>
 
-<p>This means we can apply our middleware wherever the <code>http.Handler</code> interface is used!</p>
+<p>This means we can apply our middleware wherever the <code>http.Handler</code> interface is used! How cool is that?</p>
 
     </article>
 </main>
