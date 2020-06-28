@@ -1,6 +1,6 @@
 ---
 title: "Testing Python code that makes HTTP requests"
-date: 2019-01-14T19:41:57Z
+date: 2020-06-28T21:02:10+01:00
 draft: false
 tags: ["unit tests", "design patterns", "dependency injection"]
 categories: ["python"]
