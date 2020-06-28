@@ -1,7 +1,7 @@
-{{ $paginator := .Paginate (where .Pages "Type" "posts") }}
+{{ $paginator := .Paginate (where (where .Site.RegularPages.ByDate.Reverse "Type" "posts") ".Params.draft" "ne" true) }}
 
 <ul class="post-list">
-    {{ range where .Paginator.Pages ".Params.draft" "ne" true }}
+    {{ range first 3 $paginator.Pages }}
     <li class="post-list__item">
         <a class="post-list__link" href="{{ .RelPermalink }}">
             <div class="post-list__header">
