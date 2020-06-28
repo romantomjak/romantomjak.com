@@ -80,7 +80,7 @@
     r <span style="color:#f92672">=</span> fetcher<span style="color:#f92672">.</span>get(f<span style="color:#e6db74">&#34;https://api.company.com/readings/{member_id}&#34;</span>)
     <span style="color:#75715e"># ...</span>
 </code></pre></div><p>The class that implements the fetcher &ldquo;interface&rdquo; can be injected using <a href="https://en.wikipedia.org/wiki/Dependency_injection">Dependency Injection</a> or it could just as easily be provided by the caller of the function.</p>
-<h2 id="creating-a-stub-fetcher">Creating a stub fetcher</h2>
+<h2 id="fixing-broken-unit-tests">Fixing broken unit tests</h2>
 <p>We&rsquo;re going to use a stub to implement the fetcher &ldquo;interface&rdquo; that we introduced earlier. Stub is an object that holds predefined data and uses it to answer calls during tests. Michal Lipski has written up an excellent article on <a href="https://blog.pragmatists.com/test-doubles-fakes-mocks-and-stubs-1a7491dfa3da">Test Doubles</a> if you&rsquo;re interested to read more about stubs.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> json
 

@@ -18,7 +18,7 @@
       <pubDate>Sun, 28 Jun 2020 21:02:10 +0100</pubDate>
       
       <guid>https://romantomjak.com/posts/testing-python-code-that-makes-http-requests.html</guid>
-      <description>Dependency is the key problem in software development at all scales. I&amp;rsquo;m showing how to use Dependency Inversion Principle to write code that is easy to test even if it makes HTTP requests.</description>
+      <description>Dependency is the key problem in software development at all scales. I&amp;rsquo;m showing how to use Dependency Inversion Principle to write code that is easy to test even if it is making HTTP requests.</description>
     </item>
     
     <item>
