@@ -84,11 +84,11 @@ class StubFetcher:
 
 def test_calculate_members_bill():
     member_id = 123
-    readings = {
+    readings = [
         {"timestamp": "2020-07-18T08:28:24Z", "kwh": 804},
         {"timestamp": "2020-08-20T17:35:24Z", "kwh": 884},
         # ...
-    }
+    ]
     fetcher = StubFetcher(readings)
     assert calculate_electricity_bill(fetcher, member_id) == 88.2
 ```
