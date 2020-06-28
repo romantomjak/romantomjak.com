@@ -4,7 +4,7 @@ date: 2020-06-28T21:02:10+01:00
 draft: false
 tags: ["unit tests", "design patterns", "dependency injection"]
 categories: ["python"]
-summary: Dependency is the key problem in software development at all scales. I'm showing how to use Dependency Inversion Principle to write code that makes testing HTTP requests easy.
+summary: Dependency is the key problem in software development at all scales. I'm showing how to use Dependency Inversion Principle to write code that is easy to test even if it makes HTTP requests.
 ---
 
 Dependency is the key problem in software development at all scales. If you have Oracle SQL queries scattered throughout the codebase and you decide to switch to PostgreSQL, then you will find out that your code is dependent on Oracle database and you can't change the database without changing the code.
