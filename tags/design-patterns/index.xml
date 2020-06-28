@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>design patterns on Notes on programming</title>
+    <link>https://romantomjak.com/tags/design-patterns.html</link>
+    <description>Recent content in design patterns on Notes on programming</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
+    <lastBuildDate>Sun, 28 Jun 2020 21:02:10 +0100</lastBuildDate>
+    
+	<atom:link href="https://romantomjak.com/tags/design-patterns/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Testing Python code that makes HTTP requests</title>
+      <link>https://romantomjak.com/posts/testing-python-code-that-makes-http-requests.html</link>
+      <pubDate>Sun, 28 Jun 2020 21:02:10 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/posts/testing-python-code-that-makes-http-requests.html</guid>
+      <description>Dependency is the key problem in software development at all scales. I&amp;rsquo;m showing how to use Dependency Inversion Principle to write code that is easy to test even if it makes HTTP requests.</description>
+    </item>
+    
+  </channel>
+</rss>

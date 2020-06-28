@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hetzner on Notes on programming</title>
+    <title>hetzner on Notes on programming</title>
     <link>https://romantomjak.com/tags/hetzner.html</link>
-    <description>Recent content in Hetzner on Notes on programming</description>
+    <description>Recent content in hetzner on Notes on programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
@@ -18,7 +18,7 @@
       <pubDate>Tue, 09 Oct 2018 22:06:52 +0100</pubDate>
       
       <guid>https://romantomjak.com/posts/hetzner-private-networking.html</guid>
-      <description>Hetzner has a reputation for offering a sweet price/performance ratio, however, in a true Unix philosophy, it comes at a cost of having to do everything by yourself. Including Private Networking. Normally you only get one public IP and no private interfaces. I suspect they might have some clever routing rules in place for traffic to never leave the DC, but somehow I don&amp;rsquo;t really fancy sending unencrypted traffic over public IPs.</description>
+      <description>Hetzner is lacking Private Networking feature. Tinc is a VPN daemon that offers full mesh routing. Roman is a guy that has recompiled Kernel over a dozen times because he forgot to enable a feature. Ingredients for great success!</description>
     </item>
     
   </channel>

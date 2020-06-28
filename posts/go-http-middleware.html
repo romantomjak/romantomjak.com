@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Roman Tomjak">
     
-    <meta name="generator" content="Hugo 0.47" />
+    <meta name="generator" content="Hugo 0.73.0" />
     <title>Go HTTP Middleware &middot; Notes on programming</title>
     
     <link rel="shortcut icon" href="https://romantomjak.com/favicon.ico">
@@ -41,81 +41,53 @@
         <header class="article__header">
             <time datetime="2019-08-11T19:06:57.000&#43;01:00">August 11, 2019</time> &middot; 3 min read
         </header>
-        
-
-<p>I was working on an HTML website for a Go project and like always, I started by extending the NGINX image, but then it hit me&hellip; what if I replaced NGINX with Go&rsquo;s HTTP server?!</p>
-
-<div style="width:100%;height:0;padding-bottom:43%;position:relative;"><iframe src="https://giphy.com/embed/idKeY3nvmdIsM" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
-
+        <p>I was working on an HTML website for a Go project and like always, I started by extending the NGINX image, but then it hit me&hellip; what if I replaced NGINX with Go&rsquo;s HTTP server?!</p>
+<!-- raw HTML omitted -->
 <p>Immediately after trying out this profane idea I run into an issue where by default you don&rsquo;t get any HTTP logging facilities, but luckily this is very easy to correct using (you guessed it!) HTTP middleware.</p>
-
 <h2 id="the-middleware-type">The Middleware type</h2>
-
 <p>Middleware can be used to inject additional functionality to one or more functions. Common middleware examples include database middleware, session middleware, rate limiting middleware, and so on. Most often it’s just a function that wraps and replaces another function. We’re going to define a <code>Middleware</code> type to describe a function that takes and returns an <code>http.Handler</code>:</p>
-
-<pre><code class="language-go">type Middleware func(http.Handler) http.Handler
-</code></pre>
-
-<p>I&rsquo;d like to make a point here: coming from dynamically typed languages, it is very refreshing to be able to define and use your own custom types to express an idiom!</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Middleware</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handler</span>) <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handler</span>
+</code></pre></div><p>I&rsquo;d like to make a point here: coming from dynamically typed languages, it is very refreshing to be able to define and use your own custom types to express an idiom!</p>
 <h2 id="access-log-middleware">Access Log Middleware</h2>
-
 <p>Access log is simply a location (usually a file) were HTTP server logs details about incoming requests. It&rsquo;s useful for monitoring nefarious behavior, User Agents used to access the site, approximate geographical location of the users and so on. Most commonly the HTTP method, Path, User Agent and IP address are recorded.</p>
-
 <p>Here&rsquo;s an adapted example from Mat Ryer&rsquo;s article about <a href="https://medium.com/@matryer/writing-middleware-in-golang-and-how-go-makes-it-so-much-fun-4375c1246e81">go middleware</a>:</p>
-
-<pre><code class="language-go">func AccessLog(logger *log.Logger) Middleware {
-    return func(h http.Handler) http.Handler {
-        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-            logger.Printf(&quot;%s - \&quot;%s %s %s\&quot; %q\n&quot;, r.RemoteAddr, r.Method, r.URL.Path, r.Proto, r.UserAgent())
-            h.ServeHTTP(w, r)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">AccessLog</span>(<span style="color:#a6e22e">logger</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Logger</span>) <span style="color:#a6e22e">Middleware</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">h</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handler</span>) <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handler</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandlerFunc</span>(<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+            <span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s - \&#34;%s %s %s\&#34; %q\n&#34;</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">RemoteAddr</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Method</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">URL</span>.<span style="color:#a6e22e">Path</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Proto</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">UserAgent</span>())
+            <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">ServeHTTP</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">r</span>)
         })
     }
 }
-</code></pre>
-
-<p>The most interesting bit here, of course, is the <em>Printf</em> statement that we injected just before calling the real handler. In fact, it is quite possible to create a middleware that refuses to serve requests altogether. Like when an HTTP header is missing or rate limit was exceeded, etc.</p>
-
+</code></pre></div><p>The most interesting bit here, of course, is the <em>Printf</em> statement that we injected just before calling the real handler. In fact, it is quite possible to create a middleware that refuses to serve requests altogether. Like when an HTTP header is missing or rate limit was exceeded, etc.</p>
 <p>We also see our good &lsquo;ol <code>Middleware</code> type at work - when <code>AccessLog</code> is called, it will return the wrapped function (our Middleware), but because it also happens to be a closure - it will be able to use injected logger to log details about the request.</p>
-
 <h2 id="how-to-use-it">How to use it</h2>
-
 <p>Now, we could, of course, manually wrap each function, but that would quickly get out of hand. Instead, let&rsquo;s create (yet another) function that will <em>chain</em> the middlewares together automatically:</p>
-
-<pre><code class="language-go">func WithMiddleware(h http.Handler, middlewares ...Middleware) http.Handler {
-    for _, middleware := range middlewares {
-        h = middleware(h)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">WithMiddleware</span>(<span style="color:#a6e22e">h</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handler</span>, <span style="color:#a6e22e">middlewares</span> <span style="color:#f92672">...</span><span style="color:#a6e22e">Middleware</span>) <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handler</span> {
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">middleware</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">middlewares</span> {
+        <span style="color:#a6e22e">h</span> = <span style="color:#a6e22e">middleware</span>(<span style="color:#a6e22e">h</span>)
     }
-    return h
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">h</span>
 }
-</code></pre>
-
-<p>This allows us to do some pretty cool stuff like chaining multiple middlewares:</p>
-
-<pre><code class="language-go">http.Handle(&quot;/&quot;, WithMiddleware(indexHandler, CheckSession(db), AccessLog(logger)))
-</code></pre>
-
-<h2 id="testing-the-middleware">Testing the middleware</h2>
-
+</code></pre></div><p>This allows us to do some pretty cool stuff like chaining multiple middlewares:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handle</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">WithMiddleware</span>(<span style="color:#a6e22e">indexHandler</span>, <span style="color:#a6e22e">CheckSession</span>(<span style="color:#a6e22e">db</span>), <span style="color:#a6e22e">AccessLog</span>(<span style="color:#a6e22e">logger</span>)))
+</code></pre></div><h2 id="testing-the-middleware">Testing the middleware</h2>
 <p>Our new middleware can also be very easily tested because we didn’t break the <code>http.Handler</code> interface:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestMiddleware_AccessLog</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+    <span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#66d9ef">nil</span>)
+    <span style="color:#a6e22e">resp</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">NewRecorder</span>()
 
-<pre><code class="language-go">func TestMiddleware_AccessLog(t *testing.T) {
-    req, _ := http.NewRequest(&quot;GET&quot;, &quot;/&quot;, nil)
-    resp := httptest.NewRecorder()
+    <span style="color:#a6e22e">buf</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Buffer</span>)
+    <span style="color:#a6e22e">logger</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">buf</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">LstdFlags</span>)
+    <span style="color:#a6e22e">WithMiddleware</span>(<span style="color:#a6e22e">indexHandler</span>(), <span style="color:#a6e22e">AccessLog</span>(<span style="color:#a6e22e">logger</span>)).<span style="color:#a6e22e">ServeHTTP</span>(<span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">req</span>)
 
-    buf := new(bytes.Buffer)
-    logger := log.New(buf, &quot;&quot;, log.LstdFlags)
-    WithMiddleware(indexHandler(), AccessLog(logger)).ServeHTTP(resp, req)
-
-    haystack := buf.String()
-    needle := &quot;GET / HTTP/1.1&quot;
-    if !strings.Contains(haystack, needle) {
-        t.Errorf(&quot;expected %+v to contain %q but it didnt&quot;, haystack, needle)
+    <span style="color:#a6e22e">haystack</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">buf</span>.<span style="color:#a6e22e">String</span>()
+    <span style="color:#a6e22e">needle</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;GET / HTTP/1.1&#34;</span>
+    <span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">haystack</span>, <span style="color:#a6e22e">needle</span>) {
+        <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;expected %+v to contain %q but it didnt&#34;</span>, <span style="color:#a6e22e">haystack</span>, <span style="color:#a6e22e">needle</span>)
     }
 }
-</code></pre>
-
-<p>This means we can apply our middleware wherever the <code>http.Handler</code> interface is used! How cool is that?</p>
+</code></pre></div><p>This means we can apply our middleware wherever the <code>http.Handler</code> interface is used! How cool is that?</p>
 
     </article>
 </main>

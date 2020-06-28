@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Notes on programming</title>
@@ -7,31 +7,40 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 09 Oct 2018 22:06:52 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jun 2020 21:02:10 +0100</lastBuildDate>
     
 	<atom:link href="https://romantomjak.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Ansible</title>
-      <link>https://romantomjak.com/tags/ansible.html</link>
-      <pubDate>Tue, 09 Oct 2018 22:06:52 +0100</pubDate>
+      <title>dependency injection</title>
+      <link>https://romantomjak.com/tags/dependency-injection.html</link>
+      <pubDate>Sun, 28 Jun 2020 21:02:10 +0100</pubDate>
       
-      <guid>https://romantomjak.com/tags/ansible.html</guid>
+      <guid>https://romantomjak.com/tags/dependency-injection.html</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Hetzner</title>
-      <link>https://romantomjak.com/tags/hetzner.html</link>
-      <pubDate>Tue, 09 Oct 2018 22:06:52 +0100</pubDate>
+      <title>design patterns</title>
+      <link>https://romantomjak.com/tags/design-patterns.html</link>
+      <pubDate>Sun, 28 Jun 2020 21:02:10 +0100</pubDate>
       
-      <guid>https://romantomjak.com/tags/hetzner.html</guid>
+      <guid>https://romantomjak.com/tags/design-patterns.html</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Http</title>
+      <title>unit tests</title>
+      <link>https://romantomjak.com/tags/unit-tests.html</link>
+      <pubDate>Sun, 28 Jun 2020 21:02:10 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/tags/unit-tests.html</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>http</title>
       <link>https://romantomjak.com/tags/http.html</link>
       <pubDate>Sun, 11 Aug 2019 19:06:57 +0100</pubDate>
       
@@ -40,7 +49,7 @@
     </item>
     
     <item>
-      <title>Middleware</title>
+      <title>middleware</title>
       <link>https://romantomjak.com/tags/middleware.html</link>
       <pubDate>Sun, 11 Aug 2019 19:06:57 +0100</pubDate>
       
@@ -49,7 +58,25 @@
     </item>
     
     <item>
-      <title>Tinc</title>
+      <title>ansible</title>
+      <link>https://romantomjak.com/tags/ansible.html</link>
+      <pubDate>Tue, 09 Oct 2018 22:06:52 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/tags/ansible.html</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hetzner</title>
+      <link>https://romantomjak.com/tags/hetzner.html</link>
+      <pubDate>Tue, 09 Oct 2018 22:06:52 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/tags/hetzner.html</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tinc</title>
       <link>https://romantomjak.com/tags/tinc.html</link>
       <pubDate>Tue, 09 Oct 2018 22:06:52 +0100</pubDate>
       

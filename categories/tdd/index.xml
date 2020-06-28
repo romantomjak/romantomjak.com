@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tdd on Notes on programming</title>
+    <title>tdd on Notes on programming</title>
     <link>https://romantomjak.com/categories/tdd.html</link>
-    <description>Recent content in Tdd on Notes on programming</description>
+    <description>Recent content in tdd on Notes on programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
@@ -18,8 +18,7 @@
       <pubDate>Sun, 02 Sep 2018 15:20:03 +0100</pubDate>
       
       <guid>https://romantomjak.com/posts/tdd-with-go.html</guid>
-      <description>I often find myself tinkering with Go as it possesses many of the language qualities I like - statically typed, compiled language that in many ways is similar to C, but with memory safety and garbage collection.
- Test-driven development (TDD) is a software development technique that relies on very short, repetitive development cycles. Business requirements are turned into very specific test cases, then the software is improved until tests are passing.</description>
+      <description>Short introduction to TDD with Go. Why I like TDD, what are the benefits of practising TDD and, of course, a small CLI tool that will convert words into military call letters using the Military phonetic spelling alphabet!</description>
     </item>
     
   </channel>
