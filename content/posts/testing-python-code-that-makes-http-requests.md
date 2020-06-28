@@ -4,7 +4,7 @@ date: 2020-06-28T21:02:10+01:00
 draft: false
 tags: ["unit tests", "design patterns", "dependency injection"]
 categories: ["python"]
-summary: Dependency is the key problem in software development at all scales. I'm sharing a pattern that I have found useful when testing code that makes HTTP requests.
+summary: Dependency is the key problem in software development at all scales. I'm showing how to use Dependency Inversion Principle to write code that makes testing HTTP requests easy.
 ---
 
 Dependency is the key problem in software development at all scales. If you have Oracle SQL queries scattered throughout the codebase and you decide to switch to PostgreSQL, then you will find out that your code is dependent on Oracle database and you can't change the database without changing the code.
@@ -13,13 +13,13 @@ This often occurs when code has been written without any thought of how it will 
 
 > Unit tests allow you to imagine the perfect interface of how a particular thing should look like even before you have implemented it. It becomes particularly obvious when using Test Driven Development.
 
-I have an article about [TDD with Go]({{<ref "/posts/tdd-with-go">}}) if you're interested to read more about the TDD style of programming, but essentially those pesky SQL queries would have probably ended up in a class of some sort that performs the database queries. The added boundary would allow us to swap it out for something simpler when running tests or even to PostgreSQL without a problem.
+I have an article about [TDD with Go]({{<ref "/posts/tdd-with-go">}}) if you're interested to read more about the TDD style of programming, but essentially those pesky SQL queries would have probably ended up in a class of some sort that performs the database queries. The added boundary would allow us to swap it out for something simpler when running tests or to migrate to PostgreSQL without a problem.
 
 ## The electricity bill problem
 
 Imagine you are a member of the billing platform team of Green Energy Solutions and you have been tasked with the implementation of electricity bill calculation for customers. The platform consists of various microservices and to obtain meter readings you have to query a REST API.
 
-I think it's fair to say most folks in a situation like this would reach for the [requests](https://requests.readthedocs.io/) python library to grab the readings and then do the required calculations.
+I think it's fair to say most folks in a situation like that would reach for the [requests](https://requests.readthedocs.io/) library to grab the readings and then do the required calculations.
 
 ```python
 import requests
@@ -39,18 +39,18 @@ def test_calculate_members_bill():
     assert calculate_electricity_bill(member_id) == 88.2
 ```
 
-Running the test suite reveals that an HTTP request is made on **every test run**. That is not only wrong from the perspective of unit testing because we have failed to properly isolate the unit under test, but also because it does not even exercise the logic to calculate the bill due to the failed HTTP request. How to setup data for a test like this?
+Running the test suite reveals that an HTTP request is made on **every test run**. That is not only wrong from the perspective of unit testing because we have failed to isolate the unit under test, but also because it does not even exercise the logic to calculate the bill due to the failed HTTP request. How can I setup data for a test like this?
 
 Luckily, software engineering has been around for a while and hundreds of developers have already run into this problem and over time a pattern has emerged to deal with this type of situation - [Dependency Inversion principle](https://en.wikipedia.org/wiki/Dependency_inversion_principle).
 
 ## Applying dependency inversion principle
 
-Dependency Inversion Principle stands for the D of [SOLID design principles](https://en.wikipedia.org/wiki/SOLID).  Wikipedia provides a long mumbo-jumbo of how it is defined (which you are more than welcome to read), but essentially it comes down to this:
+Dependency Inversion Principle stands for the D of [SOLID design principles](https://en.wikipedia.org/wiki/SOLID).  Wikipedia provides a long mumbo-jumbo of how it's defined (which you are more than welcome to read), but essentially it comes down to this:
 
 > - High-level modules should not depend on low-level modules. Both should depend on abstractions (e.g. interfaces).
 > - Abstractions should not depend on details. Details (concrete implementations) should depend on abstractions.
 
-Circling back to our earlier example, the `requests` library is the low-level dependency of our high-level functionality that we need to change into an "interface":
+Circling back to our earlier example, the `requests` library is the low-level detail that we need to change into an "interface":
 
 ```python
 def calculate_electricity_bill(member_id):
@@ -99,6 +99,4 @@ Run the test suite again and you'll notice that no HTTP requests are being made 
 
 Dependency Inversion Principle is one of the simplest things you can add to your arsenal to make your code easier to test.
 
-Tests are a safety net. They build confidence. Confidence to add new features or refactor old code without the fear of breaking other things. They highlight problems before the code hits production.
-
-Maintain your tests just as well as you maintain any other code.
+Maintain your tests just as well as you maintain your other code. Tests are a safety net. They build confidence. Confidence to add new features or refactor old code without the fear of breaking other things. They highlight problems before the code hits production.
