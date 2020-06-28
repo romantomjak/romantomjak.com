@@ -68,7 +68,7 @@ def calculate_electricity_bill(fetcher, member_id):
 
 The class that implements the fetcher "interface" can be injected using [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) or it could just as easily be provided by the caller of the function.
 
-## Creating a stub fetcher
+## Fixing broken unit tests
 
 We're going to use a stub to implement the fetcher "interface" that we introduced earlier. Stub is an object that holds predefined data and uses it to answer calls during tests. Michal Lipski has written up an excellent article on [Test Doubles](https://blog.pragmatists.com/test-doubles-fakes-mocks-and-stubs-1a7491dfa3da) if you're interested to read more about stubs.
 
