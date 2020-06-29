@@ -144,7 +144,7 @@ pre {
     padding: 20px;
     overflow: auto;
     border-radius: 3px;
-    background: #272b2d;
+    background: #282c34 !important;
     font-size: 14px;
     line-height: 1.5em;
     border-radius: 8px;
