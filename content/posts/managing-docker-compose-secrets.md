@@ -11,7 +11,7 @@ I use docker compose pretty much for everything. I remember at one point I even 
 
 I really liked how simple it was. There was nothing to maintain apart from the same docker compose file I used locally during development! Managing secrets was annoying though. Not impossible, but mighty annoying.
 
-Over the years I've tried multiple approaches - I've tried creating `.env` file, I've tried writing a shell script, I've templated the `docker-compose.yml`, I've even hard coded secrets in `docker-compose.yml` (not recommended). None of the approaches truly made me think "yeah, this is nice". It was more like "hope no one sees this xoxo".
+Over the years I've tried multiple approaches - I've tried creating `.env` file, I've tried writing a shell script, I've templated the `docker-compose.yml`, I've even hard coded secrets in `docker-compose.yml` (don't do that). None of the approaches truly made me think "yeah, this is nice". It was more like "hope no one sees this xoxo".
 
 ## The double dash
 
@@ -29,7 +29,7 @@ I've played with this idea before with a shell script, but quickly abandoned it 
 
 ## Docker compose and environment variables
 
-I already knew (\*cough\* from previous experience \*cough\*) that docker compose offers many ways to pass environment variables to containers. One approach immediately sprang back into mind - I could pass them through the `environment` key in the `docker-compose.yml`:
+I already knew (\*cough\* from previous experience \*cough\*) that docker compose offers many ways to pass environment variables to containers. One approach immediately spring to mind - I could pass them through the `environment` key in the `docker-compose.yml`:
 
 ```yaml
 environment:
@@ -42,9 +42,9 @@ Please note the last item in the array (`SECRET_KEY`). This tells docker compose
 
 ## Vaults for storing secrets
 
-After a couple of days when I finally "understood" how to use cryptographic functions in Go, I had something to show for! I present to you [env-vault](https://github.com/romantomjak/env-vault)! A convenient way to launch a program with environment variables populated from an encrypted file.
+After a couple of days when I finally "understood" how to use cryptographic functions in Go, I've managed to conjure [env-vault](https://github.com/romantomjak/env-vault)! A convenient way to launch a program with environment variables populated from an encrypted file.
 
-Once the `env-vault` is installed you can create a Vault using the `create` sub-command. Let's create a vault named `prod.env` to hold our production secrets:
+Once you've got `env-vault` installed, you can create a Vault using the `create` sub-command. Let's create a vault named `prod.env` to hold our production secrets:
 
 ```shell
 env-vault create prod.env
@@ -56,23 +56,31 @@ Running the command above will prompt for a new password and then open your favo
 SECRET_KEY=somesecretformyproject
 ```
 
-Save the file and close your editor. `env-vault` will encrypt the plain text using AES256-GCM symmetrical encryption.
+Save the file and close your editor. `env-vault` will encrypt the plain text using AES256-GCM symmetrical encryption. Vaults are safe to commit even on public repos, but like with everything else you must decide for yourself if you're willing to accept the risk.
 
 ## Telling docker compose about the secrets
 
-Now that we have a Vault, let's see how we can use `env-vault` to decrypt secrets for docker compose:
+Now that we have a Vault, let's see how we can use `env-vault` to decrypt secrets and expose them as environment variables to other programs. The general form for starting other programs looks like this:
+
+```shell
+env-vault <vault> <program> -- <program-arg1> <program-arg2> <...>
+```
+
+The `<program>` argument is the executable that will be launched with environment variables from the encrypted file pointed to by `<vault>` argument. Everything after the double dashes (`--`) will be collected by `env-vault` and passed to the `<program>`.
+
+Here is how we can use this to tell docker compose about the secrets:
 
 ```shell
 env-vault prod.env docker-compose -- up -d
 ```
 
-It looks somewhat mad, but essentially `env-vault` will decrypt `prod.env` and expose found environment variables to docker-compose. The command would otherwise look like this:
+It looks somewhat mad, but essentially `env-vault` will decrypt `prod.env` and expose found environment variables to docker compose. That's all you need to know to begin using `env-vault`!
 
-```shell
-docker-compose up -d
-```
+## Managing Vault passwords
 
-Now always entering the password may not be your cup of tea, so for this reason you can set the `ENV_VAULT_PASSWORD` environment variable. When it is set, `env-vault` will use it to decrypt vaults automatically and you won't get prompted for a password any time you interact with a Vault. You can set it like so:
+You will need to develop a strategy for managing your vault passwords. Each time you decrypt a Vault, you must provide a password. You can use a single password for everything or you can use multiple passwords for different environments and projects. However, you will then need to keep track of your Vault passwords.
+
+If you go down the route of using a one password for all your Vaults, you can set the `ENV_VAULT_PASSWORD` environment variable. When it is set, `env-vault` will use it to decrypt vaults automatically and you won't get prompted for a password any time you interact with a Vault. You can set it like so:
 
 ```shell
 export ENV_VAULT_PASSWORD=somepassword
@@ -80,7 +88,9 @@ export ENV_VAULT_PASSWORD=somepassword
 
 ## Adding a Makefile to speed things up
 
-Setting the `ENV_VAULT_PASSWORD` environment variable works exceptionally well when docker compose is paired with Makefiles. Makefiles are at the center of all my workflows and it is how I interact with docker compose and various other tools. Here is an example Makefile target for decrypting secrets and starting containers:
+Makefiles are at the center of all my workflows and it is how I interact with docker compose and various other tools. If you've set the `ENV_VAULT_PASSWORD` environment variable you will forget the `env-vault` is even there!
+
+Here is an example Makefile target for decrypting secrets and starting containers:
 
 ```make
 up: ## Start all containers in detached mode
