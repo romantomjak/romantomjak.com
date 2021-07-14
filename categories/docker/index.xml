@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on Notes on programming</title>
+    <link>https://romantomjak.com/categories/docker.html</link>
+    <description>Recent content in docker on Notes on programming</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 13 Jul 2021 21:05:33 +0100</lastBuildDate>
+    
+	<atom:link href="https://romantomjak.com/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Managing Docker Compose Secrets</title>
+      <link>https://romantomjak.com/posts/managing-docker-compose-secrets.html</link>
+      <pubDate>Tue, 13 Jul 2021 21:05:33 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/posts/managing-docker-compose-secrets.html</guid>
+      <description>Securely managing secrets is hard. Combine that with multiple container environments and you got yourself a real challenge. In this post I aim to describe how I solved secret management for my personal projects.</description>
+    </item>
+    
+  </channel>
+</rss>

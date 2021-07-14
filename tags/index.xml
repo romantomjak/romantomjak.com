@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Copyright (c) 2018, Roman Tomjak; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 28 Jun 2020 21:02:10 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 13 Jul 2021 21:05:33 +0100</lastBuildDate>
     
 	<atom:link href="https://romantomjak.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>docker-compose</title>
+      <link>https://romantomjak.com/tags/docker-compose.html</link>
+      <pubDate>Tue, 13 Jul 2021 21:05:33 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/tags/docker-compose.html</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>secret-management</title>
+      <link>https://romantomjak.com/tags/secret-management.html</link>
+      <pubDate>Tue, 13 Jul 2021 21:05:33 +0100</pubDate>
+      
+      <guid>https://romantomjak.com/tags/secret-management.html</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>dependency injection</title>
