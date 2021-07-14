@@ -13,7 +13,7 @@ I really liked how simple it was. There was nothing to maintain apart from the s
 
 Over the years I've tried multiple approaches - I've tried creating `.env` file, I've tried writing a shell script, I've templated the `docker-compose.yml`, I've even hard coded secrets in `docker-compose.yml` (don't do that). None of the approaches truly made me think "yeah, this is nice". It was more like "hope no one sees this xoxo".
 
-## The double dash
+## The double dash mystery
 
 One day I was messing arround with SSH host autocomplete and I came accross the peculiar looking double dash (`--`) syntax:
 
@@ -103,8 +103,10 @@ so now you can run:
 make up
 ```
 
-and `env-vault` will take it from there to make it work automagically! Yeah, this is nice.
+and `env-vault` will take it from there. Yeah, this is nice.
 
 ## Conclusion
 
-Security is a must, but simplicity is important too, especially if I'm not working on the project all the time, but only every now and then (\*cough\* like with all of my side projects \*cough\*). The less there is to remember the faster I can jump right back into it!
+Simplicity is paramount when I'm not working on a project all the time, but only every now and then (\*cough\* like with all of my side projects \*cough\*). The less there is to remember the faster I can jump right back into it!
+
+Security is important, but so is simplicity. `env-vault` reduces the risk of unintentionally commiting secrets to a public repo and offers a convenient way to manage them.
