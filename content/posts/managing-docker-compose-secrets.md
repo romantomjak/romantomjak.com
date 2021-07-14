@@ -9,7 +9,7 @@ summary: Securely managing secrets is hard. Combine that with multiple container
 
 I use docker compose pretty much for everything. I remember at one point I even was maintaing a production application with docker compose. I would copy the `docker-compose.yml` file to the server and then start the containers manually.
 
-I really liked how simple it was. There was nothing to maintain apart from the same docker compose file I used locally during development! Managing secrets was annoying though. Not impossible, but mighty annoying.
+I really liked how simple it was. There was nothing to maintain apart from the same docker compose file I used during development! Managing secrets was annoying though. Not impossible, but mighty annoying.
 
 Over the years I've tried multiple approaches - I've tried creating `.env` file, I've tried writing a shell script, I've templated the `docker-compose.yml`, I've even hard coded secrets in `docker-compose.yml` (don't do that). None of the approaches truly made me think "yeah, this is nice". It was more like "hope no one sees this xoxo".
 
@@ -38,11 +38,11 @@ environment:
   - SECRET_KEY
 ```
 
-Please note the last item in the array (`SECRET_KEY`). This tells docker compose to resolve the environment variable on the machine on which the compose is running on. Yes! We're on to something here!
+Please note that last item in the array - the `SECRET_KEY`. Specifying only a key tells docker compose to resolve the environment variable on the machine on which the compose is running on. Yes! We're on to something here!
 
 ## Vaults for storing secrets
 
-After a couple of days when I finally "understood" how to use cryptographic functions in Go, I've managed to conjure [env-vault](https://github.com/romantomjak/env-vault)! A convenient way to launch a program with environment variables populated from an encrypted file.
+After a couple of days once I finally "understood" how to use cryptographic functions in Go, I've managed to conjure [env-vault](https://github.com/romantomjak/env-vault)! A convenient way to launch a program with environment variables populated from an encrypted file.
 
 Once you've got `env-vault` installed, you can create a Vault using the `create` sub-command. Let's create a vault named `prod.env` to hold our production secrets:
 
@@ -68,7 +68,7 @@ env-vault <vault> <program> -- <program-arg1> <program-arg2> <...>
 
 The `<program>` argument is the executable that will be launched with environment variables from the encrypted file pointed to by `<vault>` argument. Everything after the double dashes (`--`) will be collected by `env-vault` and passed to the `<program>`.
 
-Here is how we can use this to tell docker compose about the secrets:
+Here is how we can use it to tell docker compose about the secrets:
 
 ```shell
 env-vault prod.env docker-compose -- up -d
@@ -109,4 +109,4 @@ and `env-vault` will take it from there. Yeah, this is nice.
 
 Simplicity is paramount when I'm not working on a project all the time, but only every now and then (\*cough\* like with all of my side projects \*cough\*). The less there is to remember the faster I can jump right back into it!
 
-Security is important, but so is simplicity. `env-vault` reduces the risk of unintentionally commiting secrets to a public repo and offers a convenient way to manage them.
+Security is important, but so is simplicity. [env-vault](https://github.com/romantomjak/env-vault) reduces the risk of unintentionally commiting secrets to a public repo and offers a convenient way to manage them.
