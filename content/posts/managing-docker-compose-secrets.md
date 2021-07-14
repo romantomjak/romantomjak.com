@@ -1,7 +1,7 @@
 ---
 title: Managing Docker Compose Secrets
 date: 2021-07-13T21:05:33+01:00
-draft: true
+draft: false
 tags: ["docker-compose", "secret-management"]
 categories: ["docker"]
 summary: Securely managing secrets is hard. Combine that with multiple container environments and you got yourself a real challenge. In this post I aim to describe how I solved secret management for my personal projects.
